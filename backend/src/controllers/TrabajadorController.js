@@ -1,10 +1,10 @@
-const { TbTipoqueja } = require('../models');
+const { Trabajador } = require('../models');
 const { Op } = require('sequelize');
 
-const TbTipoquejaController = {
+const TrabajadorController = {
   /**
    * @desc    Obtener todos los registros
-   * @route   GET /api/tbTipoqueja
+   * @route   GET /api/tbTrabajador
    * @access  Public
    */
   async getAll(req, res) {
@@ -38,7 +38,7 @@ const TbTipoquejaController = {
         }
       });
 
-      const data = await TbTipoqueja.findAndCountAll({
+      const data = await Trabajador.findAndCountAll({
         where: whereClause,
         limit: parseInt(limit),
         offset: offset,
@@ -56,7 +56,7 @@ const TbTipoquejaController = {
         }
       });
     } catch (error) {
-      console.error('Error en TbTipoquejaController.getAll:', error);
+      console.error('Error en TrabajadorController.getAll:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor',
@@ -67,18 +67,18 @@ const TbTipoquejaController = {
 
   /**
    * @desc    Obtener un registro por ID
-   * @route   GET /api/tbTipoqueja/:id
+   * @route   GET /api/tbTrabajador/:id
    * @access  Public
    */
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await TbTipoqueja.findByPk(id);
+      const data = await Trabajador.findByPk(id);
 
       if (!data) {
         return res.status(404).json({
           success: false,
-          error: 'TbTipoqueja no encontrado'
+          error: 'Trabajador no encontrado'
         });
       }
 
@@ -87,7 +87,7 @@ const TbTipoquejaController = {
         data
       });
     } catch (error) {
-      console.error('Error en TbTipoquejaController.getById:', error);
+      console.error('Error en TrabajadorController.getById:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor'
@@ -97,20 +97,20 @@ const TbTipoquejaController = {
 
   /**
    * @desc    Crear nuevo registro
-   * @route   POST /api/tbTipoqueja
+   * @route   POST /api/tbTrabajador
    * @access  Public
    */
   async create(req, res) {
     try {
-      const data = await TbTipoqueja.create(req.body);
+      const data = await Trabajador.create(req.body);
 
       res.status(201).json({
         success: true,
         data,
-        message: 'TbTipoqueja creado exitosamente'
+        message: 'Trabajador creado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTipoquejaController.create:', error);
+      console.error('Error en TrabajadorController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -122,7 +122,7 @@ const TbTipoquejaController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error creando TbTipoqueja',
+        error: 'Error creando Trabajador',
         message: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
@@ -130,33 +130,33 @@ const TbTipoquejaController = {
 
   /**
    * @desc    Actualizar registro
-   * @route   PUT /api/tbTipoqueja/:id
+   * @route   PUT /api/tbTrabajador/:id
    * @access  Public
    */
   async update(req, res) {
     try {
       const { id } = req.params;
 
-      const [affectedRows] = await TbTipoqueja.update(req.body, {
-        where: { id }
+      const [affectedRows] = await Trabajador.update(req.body, {
+        where: { id_trabajador: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbTipoqueja no encontrado'
+          error: 'Trabajador no encontrado'
         });
       }
 
-      const updatedData = await TbTipoqueja.findByPk(id);
+      const updatedData = await Trabajador.findByPk(id);
 
       res.json({
         success: true,
         data: updatedData,
-        message: 'TbTipoqueja actualizado exitosamente'
+        message: 'Trabajador actualizado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTipoquejaController.update:', error);
+      console.error('Error en TrabajadorController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -168,43 +168,43 @@ const TbTipoquejaController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error actualizando TbTipoqueja'
+        error: 'Error actualizando Trabajador'
       });
     }
   },
 
   /**
    * @desc    Eliminar registro
-   * @route   DELETE /api/tbTipoqueja/:id
+   * @route   DELETE /api/tbTrabajador/:id
    * @access  Public
    */
   async delete(req, res) {
     try {
       const { id } = req.params;
 
-      const affectedRows = await TbTipoqueja.destroy({
-        where: { id }
+      const affectedRows = await Trabajador.destroy({
+        where: { id_trabajador: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbTipoqueja no encontrado'
+          error: 'Trabajador no encontrado'
         });
       }
 
       res.json({
         success: true,
-        message: 'TbTipoqueja eliminado exitosamente'
+        message: 'Trabajador eliminado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTipoquejaController.delete:', error);
+      console.error('Error en TrabajadorController.delete:', error);
       res.status(500).json({
         success: false,
-        error: 'Error eliminando TbTipoqueja'
+        error: 'Error eliminando Trabajador'
       });
     }
   }
 };
 
-module.exports = TbTipoquejaController;
+module.exports = TrabajadorController;

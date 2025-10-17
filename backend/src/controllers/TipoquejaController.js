@@ -1,10 +1,10 @@
-const { TbCable } = require('../models');
+const { Tipoqueja } = require('../models');
 const { Op } = require('sequelize');
 
-const TbCableController = {
+const TipoquejaController = {
   /**
    * @desc    Obtener todos los registros
-   * @route   GET /api/tbCable
+   * @route   GET /api/tbTipoqueja
    * @access  Public
    */
   async getAll(req, res) {
@@ -38,7 +38,7 @@ const TbCableController = {
         }
       });
 
-      const data = await TbCable.findAndCountAll({
+      const data = await Tipoqueja.findAndCountAll({
         where: whereClause,
         limit: parseInt(limit),
         offset: offset,
@@ -56,7 +56,7 @@ const TbCableController = {
         }
       });
     } catch (error) {
-      console.error('Error en TbCableController.getAll:', error);
+      console.error('Error en TipoquejaController.getAll:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor',
@@ -67,18 +67,18 @@ const TbCableController = {
 
   /**
    * @desc    Obtener un registro por ID
-   * @route   GET /api/tbCable/:id
+   * @route   GET /api/tbTipoqueja/:id
    * @access  Public
    */
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await TbCable.findByPk(id);
+      const data = await Tipoqueja.findByPk(id);
 
       if (!data) {
         return res.status(404).json({
           success: false,
-          error: 'TbCable no encontrado'
+          error: 'Tipoqueja no encontrado'
         });
       }
 
@@ -87,7 +87,7 @@ const TbCableController = {
         data
       });
     } catch (error) {
-      console.error('Error en TbCableController.getById:', error);
+      console.error('Error en TipoquejaController.getById:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor'
@@ -97,20 +97,20 @@ const TbCableController = {
 
   /**
    * @desc    Crear nuevo registro
-   * @route   POST /api/tbCable
+   * @route   POST /api/tbTipoqueja
    * @access  Public
    */
   async create(req, res) {
     try {
-      const data = await TbCable.create(req.body);
+      const data = await Tipoqueja.create(req.body);
 
       res.status(201).json({
         success: true,
         data,
-        message: 'TbCable creado exitosamente'
+        message: 'Tipoqueja creado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbCableController.create:', error);
+      console.error('Error en TipoquejaController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -122,7 +122,7 @@ const TbCableController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error creando TbCable',
+        error: 'Error creando Tipoqueja',
         message: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
@@ -130,33 +130,33 @@ const TbCableController = {
 
   /**
    * @desc    Actualizar registro
-   * @route   PUT /api/tbCable/:id
+   * @route   PUT /api/tbTipoqueja/:id
    * @access  Public
    */
   async update(req, res) {
     try {
       const { id } = req.params;
 
-      const [affectedRows] = await TbCable.update(req.body, {
-        where: { id }
+      const [affectedRows] = await Tipoqueja.update(req.body, {
+        where: { id_tipoqueja: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbCable no encontrado'
+          error: 'Tipoqueja no encontrado'
         });
       }
 
-      const updatedData = await TbCable.findByPk(id);
+      const updatedData = await Tipoqueja.findByPk(id);
 
       res.json({
         success: true,
         data: updatedData,
-        message: 'TbCable actualizado exitosamente'
+        message: 'Tipoqueja actualizado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbCableController.update:', error);
+      console.error('Error en TipoquejaController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -168,43 +168,43 @@ const TbCableController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error actualizando TbCable'
+        error: 'Error actualizando Tipoqueja'
       });
     }
   },
 
   /**
    * @desc    Eliminar registro
-   * @route   DELETE /api/tbCable/:id
+   * @route   DELETE /api/tbTipoqueja/:id
    * @access  Public
    */
   async delete(req, res) {
     try {
       const { id } = req.params;
 
-      const affectedRows = await TbCable.destroy({
-        where: { id }
+      const affectedRows = await Tipoqueja.destroy({
+        where: { id_tipoqueja: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbCable no encontrado'
+          error: 'Tipoqueja no encontrado'
         });
       }
 
       res.json({
         success: true,
-        message: 'TbCable eliminado exitosamente'
+        message: 'Tipoqueja eliminado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbCableController.delete:', error);
+      console.error('Error en TipoquejaController.delete:', error);
       res.status(500).json({
         success: false,
-        error: 'Error eliminando TbCable'
+        error: 'Error eliminando Tipoqueja'
       });
     }
   }
 };
 
-module.exports = TbCableController;
+module.exports = TipoquejaController;

@@ -2,6 +2,12 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
   const TbCable = sequelize.define("TbCable", {
+    id_cable: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true
+    },
     numero: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -20,15 +26,21 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-    id_cable: {
-      type: DataTypes.INTEGER,
+    createdAt: {
+      type: DataTypes.DATE,
       allowNull: false,
+      defaultValue: DataTypes.NOW
     },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW
+    }
 
   }, {
     tableName: 'tb_cable',
     timestamps: true,
-    underscored: false
+    underscored: true
   });
 
   return TbCable;

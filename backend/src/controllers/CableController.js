@@ -1,10 +1,10 @@
-const { TbResultadoprueba } = require('../models');
+const { Cable } = require('../models');
 const { Op } = require('sequelize');
 
-const TbResultadopruebaController = {
+const CableController = {
   /**
    * @desc    Obtener todos los registros
-   * @route   GET /api/tbResultadoprueba
+   * @route   GET /api/tbCable
    * @access  Public
    */
   async getAll(req, res) {
@@ -38,7 +38,7 @@ const TbResultadopruebaController = {
         }
       });
 
-      const data = await TbResultadoprueba.findAndCountAll({
+      const data = await Cable.findAndCountAll({
         where: whereClause,
         limit: parseInt(limit),
         offset: offset,
@@ -56,7 +56,7 @@ const TbResultadopruebaController = {
         }
       });
     } catch (error) {
-      console.error('Error en TbResultadopruebaController.getAll:', error);
+      console.error('Error en CableController.getAll:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor',
@@ -67,18 +67,18 @@ const TbResultadopruebaController = {
 
   /**
    * @desc    Obtener un registro por ID
-   * @route   GET /api/tbResultadoprueba/:id
+   * @route   GET /api/tbCable/:id
    * @access  Public
    */
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await TbResultadoprueba.findByPk(id);
+      const data = await Cable.findByPk(id);
 
       if (!data) {
         return res.status(404).json({
           success: false,
-          error: 'TbResultadoprueba no encontrado'
+          error: 'Cable no encontrado'
         });
       }
 
@@ -87,7 +87,7 @@ const TbResultadopruebaController = {
         data
       });
     } catch (error) {
-      console.error('Error en TbResultadopruebaController.getById:', error);
+      console.error('Error en CableController.getById:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor'
@@ -97,20 +97,20 @@ const TbResultadopruebaController = {
 
   /**
    * @desc    Crear nuevo registro
-   * @route   POST /api/tbResultadoprueba
+   * @route   POST /api/tbCable
    * @access  Public
    */
   async create(req, res) {
     try {
-      const data = await TbResultadoprueba.create(req.body);
+      const data = await Cable.create(req.body);
 
       res.status(201).json({
         success: true,
         data,
-        message: 'TbResultadoprueba creado exitosamente'
+        message: 'Cable creado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbResultadopruebaController.create:', error);
+      console.error('Error en CableController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -122,7 +122,7 @@ const TbResultadopruebaController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error creando TbResultadoprueba',
+        error: 'Error creando Cable',
         message: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
@@ -130,33 +130,33 @@ const TbResultadopruebaController = {
 
   /**
    * @desc    Actualizar registro
-   * @route   PUT /api/tbResultadoprueba/:id
+   * @route   PUT /api/tbCable/:id
    * @access  Public
    */
   async update(req, res) {
     try {
       const { id } = req.params;
 
-      const [affectedRows] = await TbResultadoprueba.update(req.body, {
-        where: { id }
+      const [affectedRows] = await Cable.update(req.body, {
+        where: { id_cable: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbResultadoprueba no encontrado'
+          error: 'Cable no encontrado'
         });
       }
 
-      const updatedData = await TbResultadoprueba.findByPk(id);
+      const updatedData = await Cable.findByPk(id);
 
       res.json({
         success: true,
         data: updatedData,
-        message: 'TbResultadoprueba actualizado exitosamente'
+        message: 'Cable actualizado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbResultadopruebaController.update:', error);
+      console.error('Error en CableController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -168,43 +168,43 @@ const TbResultadopruebaController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error actualizando TbResultadoprueba'
+        error: 'Error actualizando Cable'
       });
     }
   },
 
   /**
    * @desc    Eliminar registro
-   * @route   DELETE /api/tbResultadoprueba/:id
+   * @route   DELETE /api/tbCable/:id
    * @access  Public
    */
   async delete(req, res) {
     try {
       const { id } = req.params;
 
-      const affectedRows = await TbResultadoprueba.destroy({
-        where: { id }
+      const affectedRows = await Cable.destroy({
+        where: { id_cable: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbResultadoprueba no encontrado'
+          error: 'Cable no encontrado'
         });
       }
 
       res.json({
         success: true,
-        message: 'TbResultadoprueba eliminado exitosamente'
+        message: 'Cable eliminado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbResultadopruebaController.delete:', error);
+      console.error('Error en CableController.delete:', error);
       res.status(500).json({
         success: false,
-        error: 'Error eliminando TbResultadoprueba'
+        error: 'Error eliminando Cable'
       });
     }
   }
 };
 
-module.exports = TbResultadopruebaController;
+module.exports = CableController;

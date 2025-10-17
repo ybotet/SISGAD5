@@ -1,10 +1,10 @@
-const { TbTrabajador } = require('../models');
+const { Resultadoprueba } = require('../models');
 const { Op } = require('sequelize');
 
-const TbTrabajadorController = {
+const ResultadopruebaController = {
   /**
    * @desc    Obtener todos los registros
-   * @route   GET /api/tbTrabajador
+   * @route   GET /api/tbResultadoprueba
    * @access  Public
    */
   async getAll(req, res) {
@@ -38,7 +38,7 @@ const TbTrabajadorController = {
         }
       });
 
-      const data = await TbTrabajador.findAndCountAll({
+      const data = await Resultadoprueba.findAndCountAll({
         where: whereClause,
         limit: parseInt(limit),
         offset: offset,
@@ -56,7 +56,7 @@ const TbTrabajadorController = {
         }
       });
     } catch (error) {
-      console.error('Error en TbTrabajadorController.getAll:', error);
+      console.error('Error en ResultadopruebaController.getAll:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor',
@@ -67,18 +67,18 @@ const TbTrabajadorController = {
 
   /**
    * @desc    Obtener un registro por ID
-   * @route   GET /api/tbTrabajador/:id
+   * @route   GET /api/tbResultadoprueba/:id
    * @access  Public
    */
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await TbTrabajador.findByPk(id);
+      const data = await Resultadoprueba.findByPk(id);
 
       if (!data) {
         return res.status(404).json({
           success: false,
-          error: 'TbTrabajador no encontrado'
+          error: 'Resultadoprueba no encontrado'
         });
       }
 
@@ -87,7 +87,7 @@ const TbTrabajadorController = {
         data
       });
     } catch (error) {
-      console.error('Error en TbTrabajadorController.getById:', error);
+      console.error('Error en ResultadopruebaController.getById:', error);
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor'
@@ -97,20 +97,20 @@ const TbTrabajadorController = {
 
   /**
    * @desc    Crear nuevo registro
-   * @route   POST /api/tbTrabajador
+   * @route   POST /api/tbResultadoprueba
    * @access  Public
    */
   async create(req, res) {
     try {
-      const data = await TbTrabajador.create(req.body);
+      const data = await Resultadoprueba.create(req.body);
 
       res.status(201).json({
         success: true,
         data,
-        message: 'TbTrabajador creado exitosamente'
+        message: 'Resultadoprueba creado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTrabajadorController.create:', error);
+      console.error('Error en ResultadopruebaController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -122,7 +122,7 @@ const TbTrabajadorController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error creando TbTrabajador',
+        error: 'Error creando Resultadoprueba',
         message: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
@@ -130,33 +130,33 @@ const TbTrabajadorController = {
 
   /**
    * @desc    Actualizar registro
-   * @route   PUT /api/tbTrabajador/:id
+   * @route   PUT /api/tbResultadoprueba/:id
    * @access  Public
    */
   async update(req, res) {
     try {
       const { id } = req.params;
 
-      const [affectedRows] = await TbTrabajador.update(req.body, {
-        where: { id }
+      const [affectedRows] = await Resultadoprueba.update(req.body, {
+        where: { id_resultadoprueba: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbTrabajador no encontrado'
+          error: 'Resultadoprueba no encontrado'
         });
       }
 
-      const updatedData = await TbTrabajador.findByPk(id);
+      const updatedData = await Resultadoprueba.findByPk(id);
 
       res.json({
         success: true,
         data: updatedData,
-        message: 'TbTrabajador actualizado exitosamente'
+        message: 'Resultadoprueba actualizado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTrabajadorController.update:', error);
+      console.error('Error en ResultadopruebaController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
@@ -168,43 +168,43 @@ const TbTrabajadorController = {
 
       res.status(400).json({
         success: false,
-        error: 'Error actualizando TbTrabajador'
+        error: 'Error actualizando Resultadoprueba'
       });
     }
   },
 
   /**
    * @desc    Eliminar registro
-   * @route   DELETE /api/tbTrabajador/:id
+   * @route   DELETE /api/tbResultadoprueba/:id
    * @access  Public
    */
   async delete(req, res) {
     try {
       const { id } = req.params;
 
-      const affectedRows = await TbTrabajador.destroy({
-        where: { id }
+      const affectedRows = await Resultadoprueba.destroy({
+        where: { id_resultadoprueba: id }
       });
 
       if (affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          error: 'TbTrabajador no encontrado'
+          error: 'Resultadoprueba no encontrado'
         });
       }
 
       res.json({
         success: true,
-        message: 'TbTrabajador eliminado exitosamente'
+        message: 'Resultadoprueba eliminado exitosamente'
       });
     } catch (error) {
-      console.error('Error en TbTrabajadorController.delete:', error);
+      console.error('Error en ResultadopruebaController.delete:', error);
       res.status(500).json({
         success: false,
-        error: 'Error eliminando TbTrabajador'
+        error: 'Error eliminando Resultadoprueba'
       });
     }
   }
 };
 
-module.exports = TbTrabajadorController;
+module.exports = ResultadopruebaController;
