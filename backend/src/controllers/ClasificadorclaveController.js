@@ -12,8 +12,8 @@ const ClasificadorclaveController = {
       const {
         page = 1,
         limit = 10,
-        sortBy = 'createdAt',
-        sortOrder = 'DESC',
+        sortBy = 'clasificador',
+        sortOrder = 'ASC',
         search = '',
         ...filters
       } = req.query;
@@ -24,10 +24,8 @@ const ClasificadorclaveController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
+          // Buscar en el campo clasificador
+          { clasificador: { [Op.iLike]: `%${search}%` } }
         ].filter(Boolean);
       }
 

@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
     numero: {
       type: DataTypes.STRING,
       allowNull: true,
+      unique: true,
       validate: {
         len: [0, 13]
       },

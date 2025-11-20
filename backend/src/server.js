@@ -39,6 +39,15 @@ app.get('/', (req, res) => {
     });
 });
 
+// Health check route
+app.get('/health', (req, res) => {
+    res.json({
+        status: 'OK',
+        message: 'API funcionando correctamente',
+        timestamp: new Date().toISOString()
+    });
+});
+
 // ✅ SOLUCIÓN DEFINITIVA: Manejo de errores 404 sin patrón comodín problemático
 app.use((req, res, next) => {
     res.status(404).json({

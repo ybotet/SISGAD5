@@ -12,8 +12,8 @@ const TipomovimientoController = {
       const {
         page = 1,
         limit = 10,
-        sortBy = 'createdAt',
-        sortOrder = 'DESC',
+        sortBy = 'movimiento',
+        sortOrder = 'ASC',
         search = '',
         ...filters
       } = req.query;
@@ -24,10 +24,8 @@ const TipomovimientoController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
+          // Buscar en el campo movimiento
+          { movimiento: { [Op.iLike]: `%${search}%` } }
         ].filter(Boolean);
       }
 
