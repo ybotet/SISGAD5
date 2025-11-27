@@ -7,8 +7,10 @@ const Clasificadorclave = require('./Clasificadorclave')(sequelize);
 const Clasifpizarra = require('./Clasifpizarra')(sequelize);
 const Clave = require('./Clave')(sequelize);
 const Grupow = require('./Grupow')(sequelize);
+const Linea = require('./Linea')(sequelize);
 const Mando = require('./Mando')(sequelize);
 const Movimiento = require('./Movimiento')(sequelize);
+const Permiso = require('./Permiso')(sequelize);
 const Pizarra = require('./Pizarra')(sequelize);
 const Planta = require('./Planta')(sequelize);
 const Propietario = require('./Propietario')(sequelize);
@@ -16,6 +18,7 @@ const Prueba = require('./Prueba')(sequelize);
 const Queja = require('./Queja')(sequelize);
 const Recorrido = require('./Recorrido')(sequelize);
 const Resultadoprueba = require('./Resultadoprueba')(sequelize);
+const Rol = require('./Rol')(sequelize);
 const Senalizacion = require('./Senalizacion')(sequelize);
 const Sistema = require('./Sistema')(sequelize);
 const Telefono = require('./Telefono')(sequelize);
@@ -26,9 +29,9 @@ const Tipoqueja = require('./Tipoqueja')(sequelize);
 const Trabajador = require('./Trabajador')(sequelize);
 const Trabajo = require('./Trabajo')(sequelize);
 const TrabajoTrabajadores = require('./Trabajo_trabajadores')(sequelize);
+const User = require('./User')(sequelize);
 
 
-const Linea = require('./Linea')(sequelize);
 const TbMaterial = require('./tb_material')(sequelize);
 const TbMaterialEntregado = require('./tb_material_entregado')(sequelize);
 const TbMaterialempleado = require('./tb_materialempleado')(sequelize);
@@ -167,6 +170,14 @@ Trabajador.hasMany(TrabajoTrabajadores, { foreignKey: 'id_trabajador', as: 'tb_t
 TrabajoTrabajadores.belongsTo(Trabajador, { foreignKey: 'id_trabajador', as: 'tb_trabajador' });
 //#endregion
 
+//#region Relaciones de Usuario, Rol y Permiso
+// Usuario <-> Rol (Muchos a Muchos)
+User.belongsToMany(Rol, { through: 'tb_user_roles', foreignKey: 'id_usuario', as: 'tb_rol' });
+Rol.belongsToMany(User, { through: 'tb_user_roles', foreignKey: 'id_rol', as: 'tb_user' });
+
+Rol.belongsToMany(Permiso, { through: 'tb_roles_permisos', foreignKey: 'id_rol', as: 'tb_permiso' });
+Permiso.belongsToMany(Rol, { through: 'tb_roles_permisos', foreignKey: 'id_permiso', as: 'tb_rol' });
+//#endregion
 
 // Sincronizar modelos
 const syncModels = async () => {
@@ -196,6 +207,7 @@ module.exports = {
   TbMaterialempleado,
   Movimiento,
   TbOs,
+  Permiso,
   Pizarra,
   Planta,
   Propietario,
@@ -203,6 +215,7 @@ module.exports = {
   Queja,
   Recorrido,
   Resultadoprueba,
+  Rol,
   Senalizacion,
   Telefono,
   Tipolinea,
@@ -212,4 +225,5 @@ module.exports = {
   Trabajador,
   Trabajo,
   TrabajoTrabajadores,
+  User
 };

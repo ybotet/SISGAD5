@@ -1,11 +1,13 @@
 
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 
 export default function Sidebar() {
   const navigate = useNavigate(); // 👈 hook de navegación
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { usuario, logout } = useAuth();
 
 
   const menuItems = [
@@ -136,6 +138,32 @@ export default function Sidebar() {
           </div>
         ))}
       </nav>
+
+      {/* User / Logout */}
+      <div className="p-4 border-t border-blue-800 mt-auto">
+        {!isCollapsed ? (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3">
+              <div className="w-9 h-9 bg-white text-blue-800 rounded-full flex items-center justify-center font-semibold">
+                {usuario?.nombre?.charAt(0) ?? usuario?.email?.charAt(0) ?? 'U'}
+              </div>
+              <div>
+                <div className="text-sm font-medium" onClick={() => handleNavigation(`/sistema/profile`)}>{usuario?.nombre ? `${usuario.nombre} ${usuario.apellidos ?? ''}` : usuario?.email ?? 'Usuario'}</div>
+                <div className="text-xs text-blue-200">{(usuario as any)?.tb_rol ? ((usuario as any).tb_rol[0]?.nombre ?? '') : (usuario as any)?.Rols?.[0]?.nombre ?? ''}</div>
+              </div>
+            </div>
+            <button onClick={() => { logout(); }} title="Cerrar sesión" className="p-2 rounded hover:bg-blue-800">
+              <i className="ri-logout-box-r-line"></i>
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center">
+            <button onClick={() => { logout(); }} title="Cerrar sesión" className="p-2 rounded hover:bg-blue-800">
+              <i className="ri-logout-box-r-line"></i>
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
