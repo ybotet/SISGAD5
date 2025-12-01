@@ -25,9 +25,7 @@ const ResultadopruebaController = {
       if (search) {
         whereClause[Op.or] = [
           // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
+          { resultado: { [Op.iLike]: `%${search}%` } },
         ].filter(Boolean);
       }
 

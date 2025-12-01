@@ -23,12 +23,14 @@ const TbMaterialEntregadoController = {
       // Construir where clause para búsqueda
       const whereClause = {};
       if (search) {
-        whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+        // Solo tiene IDs y fechas
+        if (!isNaN(search)) {
+          const searchNum = parseInt(search);
+          whereClause[Op.or] = [
+            { id_material: searchNum },
+            { id_trabajo: searchNum }
+          ];
+        }
       }
 
       // Agregar otros filtros

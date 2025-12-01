@@ -13,7 +13,7 @@ export default function Sidebar() {
   const menuItems = [
     { id: 'dashboard', name: 'Dashboard', icon: 'ri-dashboard-line' },
     {
-      id: 'main-modules',
+      id: 'main',
       name: 'Módulos Principales',
       icon: 'ri-folder-line',
       children: [
@@ -37,15 +37,15 @@ export default function Sidebar() {
         { id: 'mandos', name: 'Mandos', icon: 'ri-remote-control-line' },
         { id: 'movimientos', name: 'Movimientos', icon: 'ri-arrow-left-right-line' },
         { id: 'pendiente-cable', name: 'Pendiente Cable Troncal', icon: 'ri-time-line' },
-        { id: 'plantas', name: 'Plantas', icon: 'ri-building-line' },
+        { id: 'planta', name: 'Plantas', icon: 'ri-building-line' },
         { id: 'propietarios', name: 'Propietarios', icon: 'ri-user-line' },
         { id: 'resultado-prueba', name: 'Resultado de la Prueba', icon: 'ri-test-tube-line' },
         { id: 'senalizaciones', name: 'Señalizaciones', icon: 'ri-signal-tower-line' },
         { id: 'sistema', name: 'Sistema', icon: 'ri-computer-line' },
         { id: 'tipolinea', name: 'Tipo de Línea', icon: 'ri-git-branch-line' },
         { id: 'tipomovimientos', name: 'Tipo de Movimiento', icon: 'ri-arrow-left-right-line' },
-        { id: 'tipo-pizarra', name: 'Tipo de Pizarra', icon: 'ri-layout-grid-line' },
-        { id: 'tipo-queja', name: 'Tipo de Queja', icon: 'ri-feedback-line' },
+        { id: 'tipopizarra', name: 'Tipo de Pizarra', icon: 'ri-layout-grid-line' },
+        { id: 'tipoqueja', name: 'Tipo de Queja', icon: 'ri-feedback-line' },
       ]
     },
     { id: 'operarios', name: 'Operarios', icon: 'ri-team-line' },
@@ -118,13 +118,15 @@ export default function Sidebar() {
               )}
             </button>
 
-            {/* Submenu */}
+
+
+            {/* Submenus  */}
             {!isCollapsed && item.children && expandedItems.includes(item.id) && (
               <div className="ml-4 mt-1 space-y-1">
                 {item.children.map((child) => (
                   <button
                     key={child.id}
-                    onClick={() => handleNavigation(`/sistema/nomencladores/${child.id}`)}
+                    onClick={() => handleNavigation(`/sistema/${item.id}/${child.id}`)}
                     className={`w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-blue-800 transition-colors text-sm`}
                   >
                     <div className="w-4 h-4 flex items-center justify-center">

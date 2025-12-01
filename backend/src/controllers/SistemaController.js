@@ -24,10 +24,9 @@ const SistemaController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
+          // Buscar en campos de texto del modelo Sistema
+          { sistema: { [Op.iLike]: `%${search}%` } },
+          { direccion: { [Op.iLike]: `%${search}%` } }
         ].filter(Boolean);
       }
 
@@ -40,6 +39,10 @@ const SistemaController = {
 
       const data = await Sistema.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -73,7 +76,12 @@ const SistemaController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Sistema.findByPk(id);
+      const data = await Sistema.findByPk(id, {
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }]
+      });
 
       if (!data) {
         return res.status(404).json({
@@ -148,7 +156,12 @@ const SistemaController = {
         });
       }
 
-      const updatedData = await Sistema.findByPk(id);
+      const updatedData = await Sistema.findByPk(id, {
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }]
+      });
 
       res.json({
         success: true,

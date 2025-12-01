@@ -23,12 +23,18 @@ const PruebaController = {
       // Construir where clause para búsqueda
       const whereClause = {};
       if (search) {
-        whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+        // Prueba solo tiene IDs y fechas, buscar por ID si es número
+        if (!isNaN(search)) {
+          const searchNum = parseInt(search);
+          whereClause[Op.or] = [
+            { id_prueba: searchNum },
+            { id_resultado: searchNum },
+            { id_trabajador: searchNum },
+            { id_cable: searchNum },
+            { id_clave: searchNum },
+            { id_queja: searchNum }
+          ];
+        }
       }
 
       // Agregar otros filtros

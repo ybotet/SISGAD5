@@ -8,7 +8,9 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'], // ← ¡esto evita duplicados!
   },
   server: {
-    port: 5173, // o el que quieras
+    host: 'localhost',
+    port: 5173,
+    strictPort: false,
     proxy: {
       '/api': {
         target: 'http://localhost:5000', // ← puerto de tu backend Express

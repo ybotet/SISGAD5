@@ -24,11 +24,8 @@ const TipopizarraController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+          { tipo: { [Op.iLike]: `%${search}%` } }
+        ];
       }
 
       // Agregar otros filtros
@@ -40,6 +37,10 @@ const TipopizarraController = {
 
       const data = await Tipopizarra.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_clasifpizarra',
+          attributes: ['id_clasifpizarra', 'clasificacion']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -73,7 +74,12 @@ const TipopizarraController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Tipopizarra.findByPk(id);
+      const data = await Tipopizarra.findByPk(id, {
+        include: [{
+          association: 'tb_clasifpizarra',
+          attributes: ['id_clasifpizarra', 'clasificacion']
+        }]
+      });
 
       if (!data) {
         return res.status(404).json({
@@ -148,7 +154,12 @@ const TipopizarraController = {
         });
       }
 
-      const updatedData = await Tipopizarra.findByPk(id);
+      const updatedData = await Tipopizarra.findByPk(id, {
+        include: [{
+          association: 'tb_clasifpizarra',
+          attributes: ['id_clasifpizarra', 'clasificacion']
+        }]
+      });
 
       res.json({
         success: true,

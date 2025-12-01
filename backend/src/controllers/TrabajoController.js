@@ -23,12 +23,16 @@ const TrabajoController = {
       // Construir where clause para búsqueda
       const whereClause = {};
       if (search) {
-        whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+        // Solo tiene IDs
+        if (!isNaN(search)) {
+          const searchNum = parseInt(search);
+          whereClause[Op.or] = [
+            { id_trabajo: searchNum },
+            { id_os: searchNum },
+            { id_queja: searchNum },
+            { id_operario: searchNum }
+          ];
+        }
       }
 
       // Agregar otros filtros

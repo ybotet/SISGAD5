@@ -11,6 +11,7 @@ module.exports = (sequelize) => {
     tipoqueja: {
       type: DataTypes.STRING,
       allowNull: true,
+      enum: ['TELÉFONO', 'LÍNEA', 'PIZARRA'],
     },
 
     servicio: {

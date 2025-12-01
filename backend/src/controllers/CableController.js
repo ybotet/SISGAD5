@@ -24,11 +24,8 @@ const CableController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+          { cable: { [Op.iLike]: `%${search}%` } }
+        ];
       }
 
       // Agregar otros filtros
@@ -40,6 +37,10 @@ const CableController = {
 
       const data = await Cable.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -73,7 +74,12 @@ const CableController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Cable.findByPk(id);
+      const data = await Sistema.findByPk(id, {
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }]
+      });
 
       if (!data) {
         return res.status(404).json({
@@ -148,7 +154,12 @@ const CableController = {
         });
       }
 
-      const updatedData = await Cable.findByPk(id);
+      const updatedData = await Cable.findByPk(id, {
+        include: [{
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        }]
+      });
 
       res.json({
         success: true,

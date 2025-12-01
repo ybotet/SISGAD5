@@ -1,5 +1,6 @@
 const { Linea } = require('../models');
 const { Op } = require('sequelize');
+const { Recorrido, Queja } = require('../models');
 
 const LineaController = {
   /**
@@ -24,11 +25,8 @@ const LineaController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+          { linea: { [Op.iLike]: `%${search}%` } }
+        ];
       }
 
       // Agregar otros filtros
@@ -40,6 +38,10 @@ const LineaController = {
 
       const data = await Linea.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_tipolinea',
+          attributes: ['id_tipolinea', 'tipo']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -73,18 +75,47 @@ const LineaController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Linea.findByPk(id);
+      const linea = await Linea.findByPk(id, {
+        include: [
+          {
+            association: 'tb_tipolinea',
+            attributes: ['id_tipolinea', 'tipo']
+          }
+        ]
+      });
 
-      if (!data) {
+      if (!linea) {
         return res.status(404).json({
           success: false,
           error: 'Linea no encontrado'
         });
       }
 
+      const recorridos = await Recorrido.findAll({
+        where: { id_linea: id },
+        include: [{
+          association: 'tb_cable',
+          attributes: ['id_cable', 'numero']
+        }],
+        limit: 100
+      });
+
+      const quejas = await Queja.findAll({
+        where: { id_telefono: id },
+        // include: [
+        //   { model: Cable, attributes: ['id_cable', 'numero'] },
+        //   { model: Planta, attributes: ['id_planta', 'planta'] }
+        // ],
+        limit: 100 // o paginación
+      });
+
       res.json({
         success: true,
-        data
+        data: {
+          linea,
+          recorridos,
+          quejas
+        }
       });
     } catch (error) {
       console.error('Error en LineaController.getById:', error);

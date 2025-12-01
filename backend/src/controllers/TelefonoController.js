@@ -1,5 +1,6 @@
 const { Telefono } = require('../models');
 const { Op } = require('sequelize');
+const { Recorrido, Queja, Cable, Planta } = require('../models');
 
 const TelefonoController = {
   /**
@@ -24,11 +25,8 @@ const TelefonoController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          // Buscar en campos de texto (ajusta según tus campos)
-          { nombre: { [Op.iLike]: `%${search}%` } },
-          { descripcion: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } }
-        ].filter(Boolean);
+          { telefono: { [Op.iLike]: `%${search}%` } }
+        ];
       }
 
       // Agregar otros filtros
@@ -40,6 +38,13 @@ const TelefonoController = {
 
       const data = await Telefono.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_clasificacion',
+          attributes: ['id_clasificacion', 'nombre']
+        }, {
+          association: 'tb_mando',
+          attributes: ['id_mando', 'mando']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -73,18 +78,49 @@ const TelefonoController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Telefono.findByPk(id);
+      const telefono = await Telefono.findByPk(id, {
+        include: [{
+          association: 'tb_clasificacion',
+          attributes: ['id_clasificacion', 'nombre']
+        }, {
+          association: 'tb_mando',
+          attributes: ['id_mando', 'mando']
+        }],
+      });
 
-      if (!data) {
+      if (!telefono) {
         return res.status(404).json({
           success: false,
           error: 'Telefono no encontrado'
         });
       }
 
+      const recorridos = await Recorrido.findAll({
+        where: { id_telefono: id },
+        include: [{
+          association: 'tb_cable',
+          attributes: ['id_cable', 'numero']
+        }],
+        limit: 100 // o paginación
+      });
+      // data.dataValues.recorridos = recorridos;
+
+      const quejas = await Queja.findAll({
+        where: { id_telefono: id },
+        // include: [
+        //   { model: Cable, attributes: ['id_cable', 'numero'] },
+        //   { model: Planta, attributes: ['id_planta', 'planta'] }
+        // ],
+        limit: 100 // o paginación
+      });
+
       res.json({
         success: true,
-        data
+        data: {
+          telefono,
+          recorridos,
+          quejas
+        }
       });
     } catch (error) {
       console.error('Error en TelefonoController.getById:', error);
@@ -148,7 +184,15 @@ const TelefonoController = {
         });
       }
 
-      const updatedData = await Telefono.findByPk(id);
+      const updatedData = await Telefono.findByPk(id, {
+        include: [{
+          association: 'tb_clasificacion',
+          attributes: ['id_clasificacion', 'nombre']
+        }, {
+          association: 'tb_mando',
+          attributes: ['id_mando', 'mando']
+        }],
+      });
 
       res.json({
         success: true,

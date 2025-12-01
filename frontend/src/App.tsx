@@ -13,7 +13,15 @@ import TipoMovimientoPage from './pages/nomencladores/TipoMovimientoPage';
 import TipolineaPage from './pages/nomencladores/TipolineaPage';
 import ClasificadorClavePage from './pages/nomencladores/ClasificadorClavePage';
 import ClasifpizarraPage from './pages/nomencladores/ClasifpizarraPage';
-// import TelefonosPage from './pages/TelefonosPage';
+import TipoQuejaPage from './pages/nomencladores/TipoquejaPage';
+import CablePage from './pages/nomencladores/CablePage';
+import PlantaPage from './pages/nomencladores/PlantaPage';
+import TipoPizarraPage from './pages/nomencladores/TipopizarraPage';
+import ClavePage from './pages/nomencladores/ClavePage';
+
+
+import TelefonoPage from './pages/TelefonoPage';
+import LineaPage from './pages/LineaPage';
 
 export default function App() {
   return (
@@ -24,6 +32,9 @@ export default function App() {
       <Route path="/sistema/*" element={<SistemaLayout />}>
         <Route index element={<DashboardPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="main/telefonos" element={<TelefonoPage />} />
+        <Route path="main/lineas" element={<LineaPage />} />
+
         <Route path="nomencladores/clasificacion" element={<ClasificacionPage type='' />} />
         <Route path="nomencladores/mandos" element={<MandosPage />} />
         <Route path="nomencladores/grupostrabajo" element={<GruposTrabajoPage />} />
@@ -32,6 +43,11 @@ export default function App() {
         <Route path="nomencladores/tipolinea" element={<TipolineaPage />} />
         <Route path="nomencladores/clasificadorclave" element={<ClasificadorClavePage />} />
         <Route path="nomencladores/clasifpizarra" element={<ClasifpizarraPage />} />
+        <Route path="nomencladores/tipoqueja" element={<TipoQuejaPage />} />
+        <Route path="nomencladores/cable" element={<CablePage />} />
+        <Route path="nomencladores/planta" element={<PlantaPage />} />
+        <Route path="nomencladores/tipopizarra" element={<TipoPizarraPage />} />
+        <Route path="nomencladores/clave" element={<ClavePage />} />
       </Route>
     </Routes>
   );
