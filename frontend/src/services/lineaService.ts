@@ -5,6 +5,11 @@ export interface Senalizacion {
     senalizacion: string;
 }
 
+export interface Cable {
+    id_cable: number;
+    numero: number;
+}
+
 export interface TipoLinea {
     id_tipolinea: number;
     tipo: string;
@@ -57,7 +62,7 @@ export interface RecorridoItem {
     id_linea: number | null;
     id_propietario: number | null;
     id_planta: number | null;
-    id_cable: number | null;
+    tb_cable?: Cable;
     id_sistema: number | null;
     createdAt: string;
     updatedAt: string;

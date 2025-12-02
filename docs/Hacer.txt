@@ -1,0 +1,3 @@
+Quejas.
+- Generador de num_reporte.
+- Calculo de prioridad.

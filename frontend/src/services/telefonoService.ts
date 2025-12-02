@@ -126,7 +126,9 @@ export const telefonoService = {
         });
         if (search) {
             params.append('search', search);
+            console.log('🔍 Buscando quejas con término:', search);
         }
+
         if (estado) {
             if (estado === 'activo') {
                 params.append('esbaja', 'false');
@@ -134,6 +136,9 @@ export const telefonoService = {
                 params.append('esbaja', 'true');
             }
         }
+        const url = `/telefono?${params.toString()}`;
+        console.log('📡 URL de petición:', url);
+
         const response = await api.get<PaginatedResponse<TelefonoItem>>(
             `/telefono?${params.toString()}`
         );

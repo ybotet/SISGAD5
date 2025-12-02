@@ -1,5 +1,6 @@
-const { Queja } = require('../models');
+const { Queja, Prueba, Trabajo, Resultadoprueba, Trabajador, Cable, Clave } = require('../models');
 const { Op } = require('sequelize');
+
 
 const QuejaController = {
   /**
@@ -12,7 +13,7 @@ const QuejaController = {
       const {
         page = 1,
         limit = 10,
-        sortBy = 'createdAt',
+        sortBy = 'fecha',
         sortOrder = 'DESC',
         search = '',
         ...filters
@@ -20,11 +21,38 @@ const QuejaController = {
 
       const offset = (page - 1) * limit;
 
+      // Configuración de includes
+      const includeConfig = [{
+        association: 'tb_telefono',
+        attributes: ['id_telefono', 'telefono'],
+        required: false
+      }, {
+        association: 'tb_linea',
+        attributes: ['id_linea', 'clavelinea'],
+        required: false
+      }, {
+        association: 'tb_tipoqueja',
+        attributes: ['id_tipoqueja', 'tipoqueja'],
+        required: false
+      }, {
+        association: 'tb_pizarra',
+        attributes: ['id_pizarra', 'nombre'],
+        required: false
+      }, {
+        association: 'tb_clave',
+        attributes: ['id_clave', 'clave'],
+        required: false
+      }, {
+        association: 'tb_trabajador',
+        attributes: ['id_trabajador', 'clave_trabajador'],
+        required: false
+      }];
+
       // Construir where clause para búsqueda
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { queja: { [Op.iLike]: `%${search}%` } }
+          { num_reporte: { [Op.iLike]: `%${search}%` } }
         ];
       }
 
@@ -37,9 +65,11 @@ const QuejaController = {
 
       const data = await Queja.findAndCountAll({
         where: whereClause,
+        include: includeConfig,
         limit: parseInt(limit),
         offset: offset,
-        order: [[sortBy, sortOrder.toUpperCase()]]
+        order: [[sortBy, sortOrder.toUpperCase()]],
+        distinct: true
       });
 
       res.json({
@@ -57,7 +87,8 @@ const QuejaController = {
       res.status(500).json({
         success: false,
         error: 'Error interno del servidor',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        message: error.message,
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       });
     }
   },
@@ -70,18 +101,67 @@ const QuejaController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Queja.findByPk(id);
+      const queja = await Queja.findByPk(id, {
+        include: [{
+          association: 'tb_telefono',
+          attributes: ['id_telefono', 'telefono']
+        }, {
+          association: 'tb_linea',
+          attributes: ['id_linea', 'clavelinea']
+        }, {
+          association: 'tb_tipoqueja',
+          attributes: ['id_tipoqueja', 'tipoqueja']
+        }, {
+          association: 'tb_pizarra',
+          attributes: ['id_pizarra', 'nombre']
+        }, {
+          association: 'tb_clave',
+          attributes: ['id_clave', 'clave']
+        }, {
+          association: 'tb_trabajador',
+          attributes: ['id_trabajador', 'clave_trabajador']
+        }]
+      });
 
-      if (!data) {
+      if (!queja) {
         return res.status(404).json({
           success: false,
           error: 'Queja no encontrado'
         });
       }
 
+      const pruebas = await Prueba.findAll({
+        where: { id_queja: id },
+        include: [{
+          association: 'tb_resultadoprueba',
+          attributes: ['id_resultadoprueba', 'resultado']
+        }, {
+          association: 'tb_cable',
+          attributes: ['id_cable', 'numero']
+        }, {
+          association: 'tb_clave',
+          attributes: ['id_clave', 'clave']
+        }, {
+          association: 'tb_trabajador',
+          attributes: ['id_trabajador', 'clave_trabajador']
+        }]
+      });
+
+      const trabajos = await Trabajo.findAll({
+        where: { id_queja: id },
+        // include: [{
+        //   association: 'tb_clave',
+        //   attributes: ['id_clave', 'clave']
+        // }, {
+        //   association: 'tb_trabajador',
+        //   attributes: ['id_trabajador', 'nombre']
+        // }]
+      });
+
+
       res.json({
         success: true,
-        data
+        data: { queja, pruebas, trabajos }
       });
     } catch (error) {
       console.error('Error en QuejaController.getById:', error);

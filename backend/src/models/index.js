@@ -137,6 +137,10 @@ Queja.belongsTo(Clave, { foreignKey: 'id_clave', as: 'tb_clave' });
 Tipoqueja.hasMany(Queja, { foreignKey: 'id_tipoqueja', as: 'tb_quejas' });
 Queja.belongsTo(Tipoqueja, { foreignKey: 'id_tipoqueja', as: 'tb_tipoqueja' });
 
+//Probador - Queja 1:N
+Trabajador.hasMany(Queja, { foreignKey: 'probador', as: 'tb_quejas' });
+Queja.belongsTo(Trabajador, { foreignKey: 'probador', as: 'tb_trabajador' });
+
 
 //#endregion
 
@@ -147,7 +151,7 @@ Prueba.belongsTo(Queja, { foreignKey: 'id_queja', as: 'tb_queja' });
 
 //ResultadoPrueba - Prueba 1:N
 Resultadoprueba.hasMany(Prueba, { foreignKey: 'id_resultado', as: 'tb_pruebas' });
-Prueba.belongsTo(Resultadoprueba, { foreignKey: 'id_resultado', as: 'tb_resultado' });
+Prueba.belongsTo(Resultadoprueba, { foreignKey: 'id_resultado', as: 'tb_resultadoprueba' });
 
 //Probador - Prueba 1:N
 Trabajador.hasMany(Prueba, { foreignKey: 'id_trabajador', as: 'tb_pruebas' });

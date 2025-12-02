@@ -16,16 +16,9 @@ module.exports = (sequelize) => {
       allowNull: true,
       defaultValue: 0,
     },
-    fecha_prueba: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    probador1: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        len: [0, 10]
-      },
+    probador: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     fecha_pdte: {
       type: DataTypes.DATE,
@@ -82,6 +75,12 @@ module.exports = (sequelize) => {
     reportado_por: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    estado: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      enum: ['Abierta', 'En Proceso', 'Pendiente', 'Resuelto', 'Cerrada'],
+      defaultValue: 'Abierta'
     },
     createdAt: {
       type: DataTypes.DATE,

@@ -22,6 +22,7 @@ import ClavePage from './pages/nomencladores/ClavePage';
 
 import TelefonoPage from './pages/TelefonoPage';
 import LineaPage from './pages/LineaPage';
+import QuejaPage from './pages/quejaPage';
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
         <Route path="profile" element={<ProfilePage />} />
         <Route path="main/telefonos" element={<TelefonoPage />} />
         <Route path="main/lineas" element={<LineaPage />} />
+        <Route path="main/quejas" element={<QuejaPage />} />
 
         <Route path="nomencladores/clasificacion" element={<ClasificacionPage type='' />} />
         <Route path="nomencladores/mandos" element={<MandosPage />} />

@@ -19,9 +19,6 @@ export default function LineaDetallesModal({
 }: LineaDetallesModalProps) {
     if (!show) return null;
 
-    console.log('🎪 Modal detalles - RENDERIZANDO, show:', show);
-
-
     if (loading) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -35,28 +32,28 @@ export default function LineaDetallesModal({
 
     if (!linea) return null;
 
-    // const recorridosList = Array.isArray(recorridos) ? recorridos : [];
-    // const quejasList = Array.isArray(quejas) ? quejas : [];
-
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto">
-                {/* Header */}
+                {/* Header fijo */}
                 <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
                     <div className="flex justify-between items-center">
                         <h3 className="text-lg font-semibold text-gray-900">
-                            Detalles de la Línea: {linea.clavelinea}
+                            Detalles de la Línea: ${linea?.clavelinea || 'No disponible'}
                         </h3>
                         <button
                             onClick={onClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
+                            type="button"
                         >
                             <i className="ri-close-line text-xl"></i>
                         </button>
                     </div>
                 </div>
 
+                {/* Contenido */}
                 <div className="p-6">
+
                     {/* Información de la Línea */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="space-y-4">
@@ -123,7 +120,7 @@ export default function LineaDetallesModal({
                                             No.
                                         </th>
                                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Termina
+                                            Terminal
                                         </th>
                                         <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Cable
@@ -156,7 +153,7 @@ export default function LineaDetallesModal({
                                                     {recorrido.terminal || 'N/A'}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {recorrido.numero}
+                                                    {recorrido.tb_cable?.numero}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     {recorrido.par || 'N/A'}
@@ -245,5 +242,7 @@ export default function LineaDetallesModal({
                 </div>
             </div>
         </div>
+
+
     );
 }
