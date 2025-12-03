@@ -360,12 +360,6 @@ export default function QuejaDetallesModal({
                                 {/* Fechas importantes */}
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                                     <div>
-                                        <h4 className="text-sm font-medium text-gray-500">Fecha Prueba</h4>
-                                        <p className="text-sm text-gray-900">
-                                            {queja.fecha_prueba ? new Date(queja.fecha_prueba).toLocaleDateString() : 'N/A'}
-                                        </p>
-                                    </div>
-                                    <div>
                                         <h4 className="text-sm font-medium text-gray-500">Fecha Pendiente</h4>
                                         <p className="text-sm text-gray-900">
                                             {queja.fecha_pdte ? new Date(queja.fecha_pdte).toLocaleDateString() : 'N/A'}

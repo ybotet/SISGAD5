@@ -24,33 +24,45 @@ export default function Sidebar() {
       ]
     },
     {
+      id: 'operaciones',
+      name: 'Operaciones',
+      icon: 'ri-briefcase-line',
+      children: [
+        { id: 'movimientos', name: 'Movimientos', icon: 'ri-arrow-left-right-line' },
+      ]
+    },
+    {
       id: 'nomencladores',
       name: 'Nomencladores',
       icon: 'ri-settings-3-line',
       children: [
-        { id: 'cable', name: 'Cable', icon: 'ri-cable-line' },
+        { id: 'cable', name: 'Cable', icon: 'ri-wireless-line' },
         { id: 'clasificacion', name: 'Clasificación', icon: 'ri-price-tag-3-line' },
         { id: 'clasificadorclave', name: 'Clasificador de Clave', icon: 'ri-key-line' },
         { id: 'clasifpizarra', name: 'Clasificador de Pizarra', icon: 'ri-layout-grid-line' },
         { id: 'clave', name: 'Clave', icon: 'ri-key-line' },
-        { id: 'grupostrabajo', name: 'Grupos de Trabajo', icon: '' },
+        { id: 'grupostrabajo', name: 'Grupos de Trabajo', icon: 'ri-group-line' },
         { id: 'mandos', name: 'Mandos', icon: 'ri-remote-control-line' },
-        { id: 'movimientos', name: 'Movimientos', icon: 'ri-arrow-left-right-line' },
-        { id: 'pendiente-cable', name: 'Pendiente Cable Troncal', icon: 'ri-time-line' },
         { id: 'planta', name: 'Plantas', icon: 'ri-building-line' },
         { id: 'propietarios', name: 'Propietarios', icon: 'ri-user-line' },
-        { id: 'resultado-prueba', name: 'Resultado de la Prueba', icon: 'ri-test-tube-line' },
+        { id: 'resultadoprueba', name: 'Resultado de la Prueba', icon: 'ri-test-tube-line' },
         { id: 'senalizaciones', name: 'Señalizaciones', icon: 'ri-signal-tower-line' },
         { id: 'sistema', name: 'Sistema', icon: 'ri-computer-line' },
         { id: 'tipolinea', name: 'Tipo de Línea', icon: 'ri-git-branch-line' },
         { id: 'tipomovimientos', name: 'Tipo de Movimiento', icon: 'ri-arrow-left-right-line' },
         { id: 'tipopizarra', name: 'Tipo de Pizarra', icon: 'ri-layout-grid-line' },
         { id: 'tipoqueja', name: 'Tipo de Queja', icon: 'ri-feedback-line' },
+
       ]
     },
     { id: 'operarios', name: 'Operarios', icon: 'ri-team-line' },
     { id: 'estadisticas', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
-    { id: 'admin', name: 'Panel Administrativo', icon: 'ri-admin-line' },
+    {
+      id: 'admin', name: 'Panel Administrativo', icon: 'ri-admin-line',
+      children: [
+        { id: 'usuarios', name: 'Gestión de Usuarios', icon: 'ri-user-settings-line' },
+      ]
+    },
   ];
 
   // Cambiar el estado inicial para que no estén expandidos por defecto
@@ -59,7 +71,6 @@ export default function Sidebar() {
   const handleNavigation = (path: string) => {
     navigate(path); // 👈 navega a la ruta
   };
-
 
   const toggleExpanded = (itemId: string) => {
     setExpandedItems(prev =>
@@ -77,7 +88,7 @@ export default function Sidebar() {
           {!isCollapsed && (
             <div className="flex items-center space-x-2">
               <img
-                src="https://static.readdy.ai/image/a88dc50be7306a32e887204fd69a49ff/132736adac667f0bf54d60a1dcbd6825.png"
+                src="../../public/etecsa.png"
                 alt="SISGAD5 Logo"
                 className="w-10 h-10 object-contain bg-white rounded-full p-1"
               />

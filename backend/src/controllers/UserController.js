@@ -12,7 +12,7 @@ const usuariosController = {
             if (search) {
                 whereCondition[Op.or] = [
                     { nombre: { [Op.like]: `%${search}%` } },
-                    { apellido: { [Op.like]: `%${search}%` } },
+                    { apellidos: { [Op.like]: `%${search}%` } },
                     { email: { [Op.like]: `%${search}%` } }
                 ];
             }
@@ -22,12 +22,13 @@ const usuariosController = {
                 attributes: { exclude: ['password_hash'] },
                 include: [{
                     model: Rol,
+                    as: 'tb_rol',
                     through: { attributes: [] },
                     attributes: ['id_rol', 'nombre', 'descripcion']
                 }],
                 limit: parseInt(limit),
                 offset: offset,
-                order: [['fecha_creacion', 'DESC']]
+                order: [['createdAt', 'DESC']]
             });
 
             res.json({
@@ -53,7 +54,7 @@ const usuariosController = {
     // Crear usuario
     crearUser: async (req, res) => {
         try {
-            const { email, password, nombre, apellido, roles } = req.body;
+            const { email, password, nombre, apellidos, roles } = req.body;
 
             // Verificar si el email ya existe
             const usuarioExistente = await User.findOne({ where: { email } });
@@ -67,9 +68,9 @@ const usuariosController = {
             // Crear usuario
             const usuario = await User.create({
                 email,
-                password_hash: password, // Se hashea automáticamente en el hook
+                password_hash: password,
                 nombre,
-                apellido
+                apellidos
             });
 
             // Asignar roles si se proporcionaron
@@ -85,6 +86,7 @@ const usuariosController = {
                 attributes: { exclude: ['password_hash'] },
                 include: [{
                     model: Rol,
+                    as: 'tb_rol',
                     through: { attributes: [] }
                 }]
             });
@@ -108,13 +110,13 @@ const usuariosController = {
     actualizarUser: async (req, res) => {
         try {
             const { id } = req.params;
-            const { email, nombre, apellido, activo, roles } = req.body;
+            const { email, nombre, apellidos, activo, roles } = req.body;
 
             const usuario = await User.findByPk(id);
             if (!usuario) {
                 return res.status(404).json({
                     success: false,
-                    message: 'User no encontrado'
+                    message: 'Usuario no encontrado'
                 });
             }
 
@@ -122,7 +124,7 @@ const usuariosController = {
             await usuario.update({
                 email: email || usuario.email,
                 nombre: nombre || usuario.nombre,
-                apellido: apellido || usuario.apellido,
+                apellidos: apellidos || usuario.apellidos,
                 activo: activo !== undefined ? activo : usuario.activo
             });
 
@@ -139,6 +141,7 @@ const usuariosController = {
                 attributes: { exclude: ['password_hash'] },
                 include: [{
                     model: Rol,
+                    as: 'tb_rol',
                     through: { attributes: [] }
                 }]
             });

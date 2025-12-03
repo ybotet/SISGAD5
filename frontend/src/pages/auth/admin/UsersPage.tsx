@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { userService } from '../../../services/userService';
+import { userService } from '../../../services/usuariosService';
 import type { User, Rol } from '../../../types/auth';
-import UsersFilters from '../../../components/user/UsersFilters';
-import UsersTable from '../../../components/user/UsersTable';
-import UserModal from '../../../components/user/UserModal';
+import UsersFilters from '../../../components/usuarios/UsuariosFilters';
+import UsersTable from '../../../components/usuarios/UsuariosTable';
+import UserModal from '../../../components/usuarios/UsuariosModal';
 
 const UsersPage: React.FC = () => {
   const [usuarios, setUsers] = useState<User[]>([]);

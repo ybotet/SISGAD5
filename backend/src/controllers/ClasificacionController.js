@@ -24,7 +24,7 @@ const ClasificacionController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { clasificacion: { [Op.iLike]: `%${search}%` } }
+          { nombre: { [Op.iLike]: `%${search}%` } }
         ];
       }
 

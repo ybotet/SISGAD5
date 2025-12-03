@@ -44,8 +44,13 @@ export const clasificacionService = {
         page: number = 1,
         limit: number = 10
     ): Promise<PaginatedResponse<ClasificacionItem>> {
+        const params = new URLSearchParams({
+            tipo,
+            page: page.toString(),
+            limit: limit.toString()
+        });
         const response = await api.get<PaginatedResponse<ClasificacionItem>>(
-            `/clasificacion?tipo=${tipo}&page=${page}&limit=${limit}`
+            `/clasificacion?${params.toString()}`
         );
         return response.data;
     },

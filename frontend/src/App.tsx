@@ -18,11 +18,15 @@ import CablePage from './pages/nomencladores/CablePage';
 import PlantaPage from './pages/nomencladores/PlantaPage';
 import TipoPizarraPage from './pages/nomencladores/TipopizarraPage';
 import ClavePage from './pages/nomencladores/ClavePage';
+import ResultadoPruebaPage from './pages/nomencladores/ResultadoPruebaPage';
+import SenalizacionPage from './pages/nomencladores/SenalizacionPage';
+import SistemaPage from './pages/nomencladores/SistemaPage';
 
 
 import TelefonoPage from './pages/TelefonoPage';
 import LineaPage from './pages/LineaPage';
 import QuejaPage from './pages/quejaPage';
+import UsuariosPage from './pages/UsuariosPage';
 
 export default function App() {
   return (
@@ -36,6 +40,7 @@ export default function App() {
         <Route path="main/telefonos" element={<TelefonoPage />} />
         <Route path="main/lineas" element={<LineaPage />} />
         <Route path="main/quejas" element={<QuejaPage />} />
+        <Route path="admin/usuarios" element={<UsuariosPage />} />
 
         <Route path="nomencladores/clasificacion" element={<ClasificacionPage type='' />} />
         <Route path="nomencladores/mandos" element={<MandosPage />} />
@@ -50,6 +55,10 @@ export default function App() {
         <Route path="nomencladores/planta" element={<PlantaPage />} />
         <Route path="nomencladores/tipopizarra" element={<TipoPizarraPage />} />
         <Route path="nomencladores/clave" element={<ClavePage />} />
+        <Route path="nomencladores/resultadoprueba" element={<ResultadoPruebaPage />} />
+        <Route path="nomencladores/senalizaciones" element={<SenalizacionPage />} />
+        <Route path="nomencladores/sistema" element={<SistemaPage />} />
+
       </Route>
     </Routes>
   );

@@ -19,7 +19,7 @@ const RolController = {
         limit: parseInt(limit),
         offset,
         order: [['nombre', 'ASC']],
-        include: [{ model: Permiso, through: { attributes: [] }, as: 'tb_permiso' }]
+        include: [{ model: Permiso, as: 'tb_permiso', through: { attributes: [] } }]
       });
 
       res.json({

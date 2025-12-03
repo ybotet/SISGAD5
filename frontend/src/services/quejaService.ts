@@ -64,7 +64,6 @@ export interface QuejaItem {
     num_reporte: number;
     fecha: string;
     prioridad: number | null;
-    fecha_prueba: string | null;
     probador: number | null;
     fecha_pdte: string | null;
     clave_pdte: string | null;

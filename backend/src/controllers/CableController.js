@@ -24,7 +24,7 @@ const CableController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { cable: { [Op.iLike]: `%${search}%` } }
+          { numero: { [Op.iLike]: `%${search}%` } }
         ];
       }
 

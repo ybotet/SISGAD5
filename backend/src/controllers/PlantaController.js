@@ -24,7 +24,7 @@ const PlantaController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { nombre: { [Op.iLike]: `%${search}%` } }
+          { planta: { [Op.iLike]: `%${search}%` } }
         ];
       }
 
