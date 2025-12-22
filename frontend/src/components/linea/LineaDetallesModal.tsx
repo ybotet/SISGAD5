@@ -17,8 +17,10 @@ export default function LineaDetallesModal({
     loading,
     onClose
 }: LineaDetallesModalProps) {
+    // Si no se debe mostrar, no renderizar nada
     if (!show) return null;
 
+    // Mostrar loading si está cargando
     if (loading) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -30,21 +32,26 @@ export default function LineaDetallesModal({
         );
     }
 
-    if (!linea) return null;
+    // Si no hay línea (aunque show sea true), no renderizar el modal
+    if (!linea) {
+        console.warn('LineaDetallesModal: show es true pero linea es null');
+        return null;
+    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg w-full max-w-6xl max-h-[90vh] overflow-y-auto">
                 {/* Header fijo */}
-                <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+                <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 sticky top-0">
                     <div className="flex justify-between items-center">
                         <h3 className="text-lg font-semibold text-gray-900">
-                            Detalles de la Línea: ${linea?.clavelinea || 'No disponible'}
+                            Detalles de la Línea: {linea?.clavelinea || 'No disponible'}
                         </h3>
                         <button
                             onClick={onClose}
                             className="text-gray-400 hover:text-gray-600 transition-colors"
                             type="button"
+                            aria-label="Cerrar"
                         >
                             <i className="ri-close-line text-xl"></i>
                         </button>
@@ -53,25 +60,24 @@ export default function LineaDetallesModal({
 
                 {/* Contenido */}
                 <div className="p-6">
-
                     {/* Información de la Línea */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                         <div className="space-y-4">
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Clave Línea</h4>
-                                <p className="text-sm text-gray-900">{linea.clavelinea}</p>
+                                <p className="text-sm text-gray-900">{linea.clavelinea || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Desde</h4>
-                                <p className="text-sm text-gray-900">{linea.desde}</p>
+                                <p className="text-sm text-gray-900">{linea.desde || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Dirección Desde</h4>
-                                <p className="text-sm text-gray-900">{linea.dirde}</p>
+                                <p className="text-sm text-gray-900">{linea.dirde || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Zona Desde</h4>
-                                <p className="text-sm text-gray-900">{linea.zd}</p>
+                                <p className="text-sm text-gray-900">{linea.zd || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Hilos</h4>
@@ -81,15 +87,15 @@ export default function LineaDetallesModal({
                         <div className="space-y-4">
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Hasta</h4>
-                                <p className="text-sm text-gray-900">{linea.hasta}</p>
+                                <p className="text-sm text-gray-900">{linea.hasta || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Dirección Hasta</h4>
-                                <p className="text-sm text-gray-900">{linea.dirha}</p>
+                                <p className="text-sm text-gray-900">{linea.dirha || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Zona Hasta</h4>
-                                <p className="text-sm text-gray-900">{linea.zh}</p>
+                                <p className="text-sm text-gray-900">{linea.zh || 'N/A'}</p>
                             </div>
                             <div>
                                 <h4 className="text-sm font-medium text-gray-500">Tipo Línea</h4>
@@ -139,7 +145,7 @@ export default function LineaDetallesModal({
                                 <tbody className="bg-white divide-y divide-gray-200">
                                     {recorridos.length === 0 ? (
                                         <tr>
-                                            <td colSpan={7} className="px-4 py-4 text-center text-sm text-gray-500">
+                                            <td colSpan={6} className="px-4 py-4 text-center text-sm text-gray-500">
                                                 No hay recorridos registrados para esta línea
                                             </td>
                                         </tr>
@@ -153,7 +159,7 @@ export default function LineaDetallesModal({
                                                     {recorrido.terminal || 'N/A'}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {recorrido.tb_cable?.numero}
+                                                    {recorrido.tb_cable?.numero || 'N/A'}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     {recorrido.par || 'N/A'}
@@ -213,7 +219,7 @@ export default function LineaDetallesModal({
                                                     {queja.num_reporte}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                    {new Date(queja.fecha).toLocaleDateString()}
+                                                    {queja.fecha ? new Date(queja.fecha).toLocaleDateString() : 'N/A'}
                                                 </td>
                                                 <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                     {queja.probador1 || 'N/A'}
@@ -242,7 +248,5 @@ export default function LineaDetallesModal({
                 </div>
             </div>
         </div>
-
-
     );
 }

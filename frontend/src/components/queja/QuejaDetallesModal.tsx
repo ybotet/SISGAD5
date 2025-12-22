@@ -641,7 +641,7 @@ export default function QuejaDetallesModal({
                                                                 {new Date(trabajo.fecha).toLocaleDateString()}
                                                             </td>
                                                             <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                                {trabajo.probador}
+                                                                {trabajo.tb_trabajador?.clave_trabajador}
                                                             </td>
                                                             <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                                 {trabajo.estado || 'N/A'}

@@ -87,17 +87,23 @@ export default function LineaPage() {
     };
 
     // Cargar detalles de la línea
+    // En la función loadLineaDetalles de LineaPage.tsx
     const loadLineaDetalles = async (id: number) => {
         try {
+            console.log('Cargando detalles para línea ID:', id);
             setLoadingDetalles(true);
             const detalles = await lineaService.getLineaDetalles(id);
+            console.log('Detalles recibidos:', detalles);
+
             setLineaDetalles(detalles.linea);
             setRecorridos(detalles.recorridos);
             setQuejas(detalles.quejas);
+
+            console.log('Abriendo modal de detalles...');
             setShowDetallesModal(true);
         } catch (err) {
-            setError('Error al cargar los detalles de la línea');
             console.error('Error loading linea detalles:', err);
+            setError('Error al cargar los detalles de la línea');
         } finally {
             setLoadingDetalles(false);
         }

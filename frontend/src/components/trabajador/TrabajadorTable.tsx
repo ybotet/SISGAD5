@@ -1,21 +1,18 @@
-import type { LineaItem } from '../../services/lineaService';
+import type { TrabajadorItem } from '../../services/trabajadorService';
 
-interface LineaTableProps {
-    items: LineaItem[];
-    searchTerm: string;
-    onEdit: (item: LineaItem) => void;
+interface TrabajadorTableProps {
+    items: TrabajadorItem[];
+    onEdit: (item: TrabajadorItem) => void;
     onDelete: (id: number) => void;
-    onView: (item: LineaItem) => void;
     loading?: boolean;
 }
 
-export default function LineaTable({
+export default function TrabajadorTable({
     items,
     onEdit,
     onDelete,
-    onView,
     loading = false
-}: LineaTableProps) {
+}: TrabajadorTableProps) {
     if (loading) {
         return (
             <div className="bg-white rounded-lg shadow p-8 text-center">
@@ -32,19 +29,19 @@ export default function LineaTable({
                     <thead className="bg-gray-50">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Clave Línea
+                                Clave
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Desde
+                                Nombre
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Hasta
+                                Cargo
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Tipo Línea
+                                Grupo
                             </th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Estado
+                                Activo
                             </th>
                             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Acciones
@@ -61,52 +58,26 @@ export default function LineaTable({
                             </tr>
                         ) : (
                             items.map((item) => (
-                                <tr key={item.id_linea} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                        <div className="flex items-center">
-                                            <i className="ri-wire-line mr-2 text-blue-500"></i>
-                                            {item.clavelinea || (
-                                                <span className="text-gray-400 italic">Sin línea</span>
-                                            )}
-                                        </div>
+                                <tr key={item.id_trabajador} className="hover:bg-gray-50">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {item.clave_trabajador || '—'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {item.desde}
+                                        {item.nombre || '—'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {item.hasta}
+                                        {item.cargo || '—'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {item.tb_tipolinea ? (
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                {item.tb_tipolinea.tipo}
-                                            </span>
-                                        ) : (
-                                            <span className="text-gray-400 italic">Sin tipo</span>
-                                        )}
+                                        {item.tb_grupow?.grupo || '—'}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                        {item.esbaja ? (
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                                <i className="ri-close-circle-line mr-1"></i>
-                                                Baja
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                <i className="ri-checkbox-circle-line mr-1"></i>
-                                                Activo
-                                            </span>
-                                        )}
+                                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${item.activo ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'}`}>
+                                            {item.activo ? 'Sí' : 'No'}
+                                        </span>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <div className="flex justify-end space-x-2">
-                                            <button
-                                                onClick={() => onView(item)}
-                                                className="text-green-600 hover:text-green-900 p-1 rounded hover:bg-green-50 transition-colors"
-                                                title="Ver detalles"
-                                            >
-                                                <i className="ri-eye-line"></i>
-                                            </button>
                                             <button
                                                 onClick={() => onEdit(item)}
                                                 className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors"
@@ -115,7 +86,7 @@ export default function LineaTable({
                                                 <i className="ri-edit-line"></i>
                                             </button>
                                             <button
-                                                onClick={() => onDelete(item.id_linea)}
+                                                onClick={() => onDelete(item.id_trabajador)}
                                                 className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors"
                                                 title="Eliminar"
                                             >
@@ -132,3 +103,4 @@ export default function LineaTable({
         </div>
     );
 }
+

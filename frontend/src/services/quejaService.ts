@@ -56,6 +56,7 @@ export interface TrabajoItem {
     estado: string | null;
     observaciones: string | null;
     id_queja: number;
+    tb_trabajador: any | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -183,8 +184,8 @@ export const quejaService = {
             console.log('🎯 Aplicando filtro estado:', estado);
         }
 
-        const url = `/queja?${params.toString()}`;
-        console.log('📡 URL de petición:', url);
+        // const url = `/queja?${params.toString()}`;
+        // console.log('📡 URL de petición:', url);
 
         const response = await api.get<PaginatedResponse<QuejaItem>>(
             `/queja?${params.toString()}`

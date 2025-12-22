@@ -15,6 +15,8 @@ router.get('/', MovimientoController.getAll);
  * @access  Public
  */
 router.get('/:id', MovimientoController.getById);
+router.get('/telefono/:telefono', MovimientoController.getMovimientoByTelefono);
+router.get('/linea/:linea', MovimientoController.getMovimientoByLinea);
 
 /**
  * @route   POST /api/tbMovimiento

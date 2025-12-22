@@ -170,8 +170,7 @@ export const lineaService = {
         quejas: QuejaItem[];
     }> {
         const response = await api.get(`/linea/${id}`);
-        console.log(response.data);
-        return response.data;
+        return response.data.data;
     },
 
     // Obtener señalizaciones para el combo

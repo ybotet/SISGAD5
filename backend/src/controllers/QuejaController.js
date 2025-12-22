@@ -149,13 +149,13 @@ const QuejaController = {
 
       const trabajos = await Trabajo.findAll({
         where: { id_queja: id },
-        // include: [{
-        //   association: 'tb_clave',
-        //   attributes: ['id_clave', 'clave']
-        // }, {
-        //   association: 'tb_trabajador',
-        //   attributes: ['id_trabajador', 'nombre']
-        // }]
+        include: [{
+          association: 'tb_clave',
+          attributes: ['id_clave', 'clave']
+        }, {
+          association: 'tb_trabajador',
+          attributes: ['id_trabajador', 'clave_trabajador']
+        }]
       });
 
 

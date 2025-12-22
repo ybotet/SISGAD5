@@ -201,7 +201,85 @@ const MovimientoController = {
         error: 'Error eliminando Movimiento'
       });
     }
-  }
-};
+  },
 
+  async getMovimientoByTelefono(req, res) {
+    try {
+      const { telefono } = req.params;
+      const data = await Movimiento.findAll({
+        where: { id_telefono: telefono },
+        include: [
+          {
+            association: 'tb_tipomovimiento',
+            attributes: ['id_tipomovimiento', 'movimiento']
+          }
+        ],
+      });
+
+      if (!data)
+        return res.status(200).json({
+          success: false,
+          error: 'Teléfono no encotrado'
+        });
+
+      if (!data.length)
+        return res.status(200).json({
+          success: false,
+          error: 'El teléfono no tiene movimientos registrados'
+        });
+
+      res.json({
+        success: true,
+        data
+      });
+    } catch (error) {
+      console.error('Error en MovimientoController.getMovimientoByTelefono:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Error interno del servidor'
+      });
+    }
+
+  },
+
+  async getMovimientoByLinea(req, res) {
+    try {
+      const { linea } = req.params;
+      const data = await Movimiento.findAll({
+        where: { id_linea: linea },
+        include: [
+          {
+            association: 'tb_tipomovimiento',
+            attributes: ['id_tipomovimiento', 'movimiento']
+          }
+        ],
+      });
+
+      if (!data)
+        return res.status(200).json({
+          success: false,
+          error: 'Línea no encontrada'
+        });
+
+      if (!data.length)
+        return res.status(200).json({
+          success: false,
+          error: 'La línea no tiene movimientos registrados'
+        });
+
+      res.json({
+        success: true,
+        data
+      });
+    } catch (error) {
+      console.error('Error en MovimientoController.getMovimientoByLinea:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Error interno del servidor'
+      });
+    }
+
+  }
+
+};
 module.exports = MovimientoController;

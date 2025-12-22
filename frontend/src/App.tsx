@@ -21,6 +21,7 @@ import ClavePage from './pages/nomencladores/ClavePage';
 import ResultadoPruebaPage from './pages/nomencladores/ResultadoPruebaPage';
 import SenalizacionPage from './pages/nomencladores/SenalizacionPage';
 import SistemaPage from './pages/nomencladores/SistemaPage';
+import TrabajadorPage from './pages/TrabajadorPage';
 
 
 import TelefonoPage from './pages/TelefonoPage';
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="main/telefonos" element={<TelefonoPage />} />
         <Route path="main/lineas" element={<LineaPage />} />
         <Route path="main/quejas" element={<QuejaPage />} />
+        <Route path="operarios" element={<TrabajadorPage />} />
         <Route path="admin/usuarios" element={<UsuariosPage />} />
 
         <Route path="nomencladores/clasificacion" element={<ClasificacionPage type='' />} />

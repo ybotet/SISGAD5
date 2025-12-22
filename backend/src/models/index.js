@@ -166,6 +166,17 @@ Clave.hasMany(Prueba, { foreignKey: 'id_clave', as: 'tb_pruebas' });
 Prueba.belongsTo(Clave, { foreignKey: 'id_clave', as: 'tb_clave' });
 //#endregion
 
+//#region Relaciones de Trabajo 
+//Trabajo - Trabajador 1:N
+Trabajador.hasMany(Trabajo, { foreignKey: 'probador', as: 'tb_trabajo' });
+Trabajo.belongsTo(Trabajador, { foreignKey: 'probador', as: 'tb_trabajador' });
+
+Clave.hasMany(Trabajo, { foreignKey: 'estado', as: 'tb_trabajo' });
+Trabajo.belongsTo(Clave, { foreignKey: 'estado', as: 'tb_clave' });
+
+//#endregion
+
+
 //#region Relaciones de Trabajo_trabajadores
 Trabajo.hasMany(TrabajoTrabajadores, { foreignKey: 'id_trabajo', as: 'tb_trabajadores' });
 TrabajoTrabajadores.belongsTo(Trabajo, { foreignKey: 'id_trabajo', as: 'tb_trabajo' });
@@ -181,6 +192,24 @@ Rol.belongsToMany(User, { through: 'tb_user_roles', foreignKey: 'id_rol', as: 't
 
 Rol.belongsToMany(Permiso, { through: 'tb_roles_permisos', foreignKey: 'id_rol', as: 'tb_permiso' });
 Permiso.belongsToMany(Rol, { through: 'tb_roles_permisos', foreignKey: 'id_permiso', as: 'tb_rol' });
+//#endregion
+
+//#region Relaciones de Movimiento
+//Movimiento - Tipomovimiento 1:N
+Tipomovimiento.hasMany(Movimiento, { foreignKey: 'id_tipomovimiento', as: 'tb_movimientos' });
+Movimiento.belongsTo(Tipomovimiento, { foreignKey: 'id_tipomovimiento', as: 'tb_tipomovimiento' });
+
+//Movimiento - Telefono 1:N
+Telefono.hasMany(Movimiento, { foreignKey: 'id_telefono', as: 'tb_movimientos' });
+Movimiento.belongsTo(Telefono, { foreignKey: 'id_telefono', as: 'tb_telefono' });
+
+//Movimiento - Linea 1:N
+Linea.hasMany(Movimiento, { foreignKey: 'id_linea', as: 'tb_movimientos' });
+Movimiento.belongsTo(Linea, { foreignKey: 'id_linea', as: 'tb_linea' });
+
+//Movimiento - Os 1:N
+TbOs.hasMany(Movimiento, { foreignKey: 'id_os', as: 'tb_movimientos' });
+Movimiento.belongsTo(TbOs, { foreignKey: 'id_os', as: 'tb_os' });
 //#endregion
 
 // Sincronizar modelos

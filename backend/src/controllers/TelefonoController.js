@@ -13,7 +13,7 @@ const TelefonoController = {
       const {
         page = 1,
         limit = 10,
-        sortBy = 'createdAt',
+        sortBy = 'updatedAt',
         sortOrder = 'DESC',
         search = '',
         ...filters
@@ -100,6 +100,15 @@ const TelefonoController = {
         include: [{
           association: 'tb_cable',
           attributes: ['id_cable', 'numero']
+        }, {
+          association: 'tb_planta',
+          attributes: ['id_planta', 'planta']
+        }, {
+          association: 'tb_sistema',
+          attributes: ['id_sistema', 'sistema']
+        }, {
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
         }],
         limit: 100 // o paginación
       });
@@ -107,10 +116,12 @@ const TelefonoController = {
 
       const quejas = await Queja.findAll({
         where: { id_telefono: id },
-        // include: [
-        //   { model: Cable, attributes: ['id_cable', 'numero'] },
-        //   { model: Planta, attributes: ['id_planta', 'planta'] }
-        // ],
+        include: [
+          {
+            association: 'tb_trabajador',
+            attributes: ['id_trabajador', 'clave_trabajador']
+          }
+        ],
         limit: 100 // o paginación
       });
 

@@ -244,10 +244,6 @@ export default function UsuariosModal({
                   <p className="mt-1 text-sm text-red-600">{errors.nombre}</p>
                 )}
               </div>
-            </div>
-
-            {/* Columna 2 - Información adicional */}
-            <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Apellidos *
@@ -267,6 +263,11 @@ export default function UsuariosModal({
                   <p className="mt-1 text-sm text-red-600">{errors.apellidos}</p>
                 )}
               </div>
+
+            </div>
+
+            {/* Columna 2 - Información adicional */}
+            <div className="space-y-4">
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -289,7 +290,7 @@ export default function UsuariosModal({
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Roles
                 </label>
-                <div className="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                <div className="space-y-2 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-3">
                   {loadingCombos ? (
                     <div className="text-center py-2">
                       <i className="ri-loader-4-line animate-spin text-blue-600"></i>

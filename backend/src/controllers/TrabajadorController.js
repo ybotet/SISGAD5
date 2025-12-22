@@ -1,4 +1,4 @@
-const { Trabajador } = require('../models');
+const { Trabajador, Grupow } = require('../models');
 const { Op } = require('sequelize');
 
 const TrabajadorController = {
@@ -41,7 +41,14 @@ const TrabajadorController = {
         where: whereClause,
         limit: parseInt(limit),
         offset: offset,
-        order: [[sortBy, sortOrder.toUpperCase()]]
+        order: [[sortBy, sortOrder.toUpperCase()]],
+        include: [
+          {
+            model: Grupow,
+            as: 'tb_grupow',
+            attributes: ['id_grupow', 'grupo']
+          }
+        ]
       });
 
       res.json({
@@ -72,7 +79,15 @@ const TrabajadorController = {
   async getById(req, res) {
     try {
       const { id } = req.params;
-      const data = await Trabajador.findByPk(id);
+      const data = await Trabajador.findByPk(id, {
+        include: [
+          {
+            model: Grupow,
+            as: 'tb_grupow',
+            attributes: ['id_grupow', 'grupo']
+          }
+        ]
+      });
 
       if (!data) {
         return res.status(404).json({

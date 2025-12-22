@@ -74,7 +74,11 @@ export default function QuejaModal({
     // Actualizar formData cuando cambia editingItem
     useEffect(() => {
         if (editingItem) {
-            const fecha = editingItem.fecha ? editingItem.fecha.split('T')[0] : '';
+            const fecha = editingItem.fecha
+                ? editingItem.fecha.includes('T')
+                    ? editingItem.fecha.substring(0, 16) // Formato YYYY-MM-DDTHH:mm
+                    : editingItem.fecha + 'T00:00'
+                : '';
             const fechaPdte = editingItem.fecha_pdte ? editingItem.fecha_pdte.split('T')[0] : '';
             const fechaOk = editingItem.fechaok ? editingItem.fechaok.split('T')[0] : '';
 

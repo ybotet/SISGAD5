@@ -1,4 +1,4 @@
-interface LineaStatsProps {
+interface TrabajadorStatsProps {
     total: number;
     showing: number;
     page: number;
@@ -6,19 +6,19 @@ interface LineaStatsProps {
     limit: number;
 }
 
-export default function LineaStats({
+export default function TrabajadorStats({
     total,
     showing,
     page,
     pages,
     limit
-}: LineaStatsProps) {
+}: TrabajadorStatsProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
             <div className="bg-white rounded-lg shadow p-4">
                 <div className="flex items-center">
                     <div className="bg-blue-500 rounded-lg p-2 w-10 h-10 flex items-center justify-center">
-                        <i className="ri-git-branch-line text-white"></i>
+                        <i className="ri-team-line text-white"></i>
                     </div>
                     <div className="ml-3">
                         <p className="text-sm font-medium text-gray-500">Total General</p>
@@ -65,3 +65,4 @@ export default function LineaStats({
         </div>
     );
 }
+

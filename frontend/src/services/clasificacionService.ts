@@ -3,13 +3,13 @@ import api from './api';
 // Interfaces actualizadas según tu API
 export interface ClasificacionItem {
     id_clasificacion: number;
-    nombre: string;  // Cambiado de 'nombre' a 'clasi'
+    nombre: string;
     createdAt: string;
     updatedAt: string;
 }
 
 export interface CreateClasificacionRequest {
-    nombre: string;  // Cambiado de 'nombre' a 'clasi'
+    nombre: string;
     tipo: string;
     // createdAt lo genera el backend automáticamente
 }

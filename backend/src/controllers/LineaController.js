@@ -25,7 +25,7 @@ const LineaController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { linea: { [Op.iLike]: `%${search}%` } }
+          { clavelinea: { [Op.iLike]: `%${search}%` } }
         ];
       }
 
@@ -92,12 +92,21 @@ const LineaController = {
       }
 
       const recorridos = await Recorrido.findAll({
-        where: { id_linea: id },
+        where: { id_telefono: id },
         include: [{
           association: 'tb_cable',
           attributes: ['id_cable', 'numero']
+        }, {
+          association: 'tb_planta',
+          attributes: ['id_planta', 'planta']
+        }, {
+          association: 'tb_sistema',
+          attributes: ['id_sistema', 'sistema']
+        }, {
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
         }],
-        limit: 100
+        limit: 100 // o paginación
       });
 
       const quejas = await Queja.findAll({
