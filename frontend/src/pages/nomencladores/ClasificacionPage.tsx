@@ -104,13 +104,13 @@ export default function ClasificacionPage({ type }: ClasificacionPageProps) {
             setError('');
 
             await clasificacionService.deleteClasificacion(itemToDelete);
-            console.log('✅ Eliminación exitosa');
+            console.log('Eliminación exitosa');
 
             // Recargar los datos
             await loadClasificaciones(pagination.page, pagination.limit);
 
         } catch (err: any) {
-            console.error('❌ Error en eliminación:', err);
+            console.error('Error en eliminación:', err);
             const errorMessage = err?.message || 'Error al eliminar la clasificación';
             setError(errorMessage);
         } finally {
@@ -169,6 +169,8 @@ export default function ClasificacionPage({ type }: ClasificacionPageProps) {
     const filteredItems = items.filter(item =>
         item.nombre.toLowerCase().includes(searchTerm.toLowerCase())
     );
+    console.log('Items filtrados:', filteredItems.length);
+
 
     // Loading state
     if (loading && items.length === 0) {

@@ -5,7 +5,7 @@ interface PaginationInfo {
     pages: number;
 }
 
-interface PropietariosPaginationProps {
+interface UsuariosPaginationProps {
     pagination: PaginationInfo;
     onPageChange: (page: number) => void;
     onLimitChange: (limit: number) => void;
@@ -13,19 +13,19 @@ interface PropietariosPaginationProps {
     onPrev: () => void;
 }
 
-export default function PropietariosPagination({
+export default function UsuariosPagination({
     pagination,
     // onPageChange,
     onLimitChange,
     onNext,
     onPrev
-}: PropietariosPaginationProps) {
+}: UsuariosPaginationProps) {
     return (
         <div className="bg-white rounded-lg shadow p-4 mt-4">
             <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <div className="text-sm text-gray-600">
                     Mostrando {pagination.page * pagination.limit - pagination.limit + 1} -{' '}
-                    {Math.min(pagination.page * pagination.limit, pagination.total)} de {pagination.total} propietarios
+                    {Math.min(pagination.page * pagination.limit, pagination.total)} de {pagination.total} usuarios
                 </div>
 
                 <div className="flex items-center space-x-4">

@@ -15,7 +15,7 @@ interface QuejaPaginationProps {
 
 export default function QuejaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

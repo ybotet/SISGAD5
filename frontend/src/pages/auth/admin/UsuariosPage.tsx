@@ -4,8 +4,8 @@ import type {
     CreateUsuarioRequest,
     UpdateUsuarioRequest,
     PaginatedResponse
-} from '../services/usuariosService';
-import { usuariosService } from '../services/usuariosService';
+} from '../../../services/usuariosService';
+import { usuariosService } from '../../../services/usuariosService';
 
 // Components
 import {
@@ -17,7 +17,7 @@ import {
     UsuariosPagination,
     UsuariosModal,
     UsuariosConfirmModal
-} from '../components/usuarios';
+} from '../../../components/usuarios';
 
 export default function UsuariosPage() {
     // Estados principales
@@ -67,7 +67,7 @@ export default function UsuariosPage() {
                 search
             );
 
-            console.log('✅ Usuarios cargados:', {
+            console.log('Usuarios cargados:', {
                 cantidad: response.data.length,
                 pagination: response.pagination
             });
@@ -77,7 +77,7 @@ export default function UsuariosPage() {
         } catch (err) {
             const errorMsg = 'Error al cargar los usuarios. Por favor, intente nuevamente.';
             setError(errorMsg);
-            console.error('❌ Error loading usuarios:', err);
+            console.error('Error loading usuarios:', err);
         } finally {
             setLoading(false);
         }
@@ -86,7 +86,7 @@ export default function UsuariosPage() {
     // Funciones de paginación
     const goToPage = (page: number) => {
         if (page >= 1 && page <= pagination.pages) {
-            console.log('📄 Cambiando a página:', page);
+            console.log('Cambiando a página:', page);
             loadUsuarios(page, pagination.limit, searchTerm);
         }
     };
@@ -104,13 +104,13 @@ export default function UsuariosPage() {
     };
 
     const handleLimitChange = (newLimit: number) => {
-        console.log('📊 Cambiando límite por página a:', newLimit);
+        console.log('Cambiando límite por página a:', newLimit);
         loadUsuarios(1, newLimit, searchTerm);
     };
 
     // Funciones para eliminar con confirmación modal
     const handleDelete = (id: number) => {
-        console.log('🗑️ Solicitando eliminación para ID:', id);
+        console.log('Solicitando eliminación para ID:', id);
         setItemToDelete(id);
         setShowConfirmModal(true);
     };
@@ -118,7 +118,7 @@ export default function UsuariosPage() {
     const handleConfirmDelete = async () => {
         if (!itemToDelete) return;
 
-        console.log('✅ Confirmando eliminación para ID:', itemToDelete);
+        console.log('Confirmando eliminación para ID:', itemToDelete);
 
         try {
             setDeleting(true);
@@ -131,7 +131,7 @@ export default function UsuariosPage() {
             await loadUsuarios(pagination.page, pagination.limit, searchTerm);
 
         } catch (err: any) {
-            console.error('❌ Error en eliminación:', err);
+            console.error('Error en eliminación:', err);
             const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar el usuario';
             setError(errorMessage);
         } finally {
@@ -142,7 +142,7 @@ export default function UsuariosPage() {
     };
 
     const handleCancelDelete = () => {
-        console.log('❌ Eliminación cancelada por el usuario');
+        console.log('Eliminación cancelada por el usuario');
         setShowConfirmModal(false);
         setItemToDelete(null);
     };
@@ -159,7 +159,7 @@ export default function UsuariosPage() {
             setSaving(true);
             setError('');
 
-            console.log('💾 Guardando datos del formulario...');
+            console.log('Guardando datos del formulario...');
 
             const roles = formData.getAll('roles').map(role => parseInt(role as string));
 
@@ -179,7 +179,7 @@ export default function UsuariosPage() {
                     updateData.password = nuevaPassword;
                 }
 
-                console.log('📤 Datos para actualizar:', updateData);
+                console.log('Datos para actualizar:', updateData);
                 await usuariosService.updateUsuario(editingItem.id_usuario, updateData);
             } else {
                 // Para creación
@@ -192,17 +192,17 @@ export default function UsuariosPage() {
                     roles: roles.length > 0 ? roles : undefined
                 };
 
-                console.log('📤 Datos para crear:', createData);
+                console.log('Datos para crear:', createData);
                 await usuariosService.createUsuario(createData);
             }
 
-            console.log('✅ Operación exitosa, recargando lista...');
+            console.log('Operación exitosa, recargando lista...');
             await loadUsuarios(pagination.page, pagination.limit, searchTerm);
 
             setShowModal(false);
             setEditingItem(null);
         } catch (err: any) {
-            console.error('❌ Error saving usuario:', err);
+            console.error('Error saving usuario:', err);
             const errorMessage = err?.response?.data?.error || err?.message ||
                 (editingItem ? 'Error al actualizar el usuario' : 'Error al crear el usuario');
             setError(errorMessage);
@@ -212,14 +212,14 @@ export default function UsuariosPage() {
     };
 
     const handleCloseModal = () => {
-        console.log('🔒 Cerrando modal de usuario');
+        console.log('Cerrando modal de usuario');
         setShowModal(false);
         setEditingItem(null);
     };
 
     // Manejar refresco desde filtros
     const handleRefresh = () => {
-        console.log('🔄 Refrescando lista de usuarios');
+        console.log('Refrescando lista de usuarios');
         loadUsuarios(pagination.page, pagination.limit, searchTerm);
     };
 
@@ -243,7 +243,7 @@ export default function UsuariosPage() {
                 title="Gestión de Usuarios"
                 description="Administra los usuarios, roles y permisos del sistema"
                 onAdd={() => {
-                    console.log('➕ Abriendo modal para nuevo usuario');
+                    console.log('Abriendo modal para nuevo usuario');
                     setShowModal(true);
                 }}
             />
@@ -252,7 +252,7 @@ export default function UsuariosPage() {
             <UsuariosError
                 error={error}
                 onClose={() => {
-                    console.log('❌ Cerrando mensaje de error');
+                    console.log('Cerrando mensaje de error');
                     setError('');
                 }}
             />
@@ -270,7 +270,7 @@ export default function UsuariosPage() {
             <UsuariosFilters
                 searchTerm={searchTerm}
                 onSearchChange={(term) => {
-                    console.log('🔍 Buscando:', term);
+                    console.log('Buscando por:', term);
                     setSearchTerm(term);
                 }}
                 onRefresh={handleRefresh}

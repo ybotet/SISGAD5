@@ -15,7 +15,7 @@ interface ClavePaginationProps {
 
 export default function ClavePagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

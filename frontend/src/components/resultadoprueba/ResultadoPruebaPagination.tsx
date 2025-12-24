@@ -15,7 +15,7 @@ interface ResultadoPruebaPaginationProps {
 
 export default function ResultadoPruebaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

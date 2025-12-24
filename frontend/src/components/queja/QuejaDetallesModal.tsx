@@ -32,7 +32,8 @@ export default function QuejaDetallesModal({
     // Estados para combos
     const [claves, setClaves] = useState<Clave[]>([]);
     const [probadores, setProbadores] = useState<Trabajador[]>([]);
-    const [loadingCombos, setLoadingCombos] = useState(false);
+    // const [ setLoadingCombos] = useState<boolean>(false);
+    const [_loadingCombos, setLoadingCombos] = useState<boolean>(false);
 
     // Estados para formularios
     const [nuevaPrueba, setNuevaPrueba] = useState({

@@ -38,7 +38,7 @@ export default function ClaveFilters({
                         >
                             <option value="">Todos los estados</option>
                             <option value="pendiente">Pendientes</option>
-                            <option value="no-pendiente">No Pendientes</option>
+                            <option value="no_pendiente">No Pendientes</option>
                         </select>
                         <i className="ri-arrow-down-s-line absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none"></i>
                     </div>

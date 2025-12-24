@@ -46,7 +46,8 @@ export const claveService = {
     async getClaves(
         page: number = 1,
         limit: number = 10,
-        search: string = ''
+        search: string = '',
+        estado: string = ''
     ): Promise<PaginatedResponse<ClaveItem>> {
         const params = new URLSearchParams({
             page: page.toString(),
@@ -54,6 +55,13 @@ export const claveService = {
         });
         if (search) {
             params.append('search', search);
+        }
+        if (estado) {
+            if (estado === 'no_pendiente') {
+                params.append('es_pendiente', 'false');
+            } else if (estado === 'pendiente') {
+                params.append('es_pendiente', 'true');
+            }
         }
         const response = await api.get<PaginatedResponse<ClaveItem>>(
             `/clave?${params.toString()}`

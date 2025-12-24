@@ -80,6 +80,8 @@ export default function Sidebar() {
     );
   };
 
+  const baseUrl = import.meta.env.VITE_BASE_URL || '/';
+
   return (
     <div className={`text-white transition-all duration-300 ${isCollapsed ? 'w-16' : 'w-64'} min-h-screen`} style={{ backgroundColor: '#083480' }}>
       {/* Header */}
@@ -88,7 +90,7 @@ export default function Sidebar() {
           {!isCollapsed && (
             <div className="flex items-center space-x-2">
               <img
-                src="../../public/etecsa.png"
+                src={`${baseUrl}etecsa.png`}
                 alt="SISGAD5 Logo"
                 className="w-10 h-10 object-contain bg-white rounded-full p-1"
               />

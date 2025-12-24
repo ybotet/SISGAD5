@@ -4,6 +4,7 @@
   "description": "Backend para SISGAD5",
   "main": "src/server.js",
   "scripts": {
+    "build": "tsc",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",

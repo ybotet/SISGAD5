@@ -15,7 +15,7 @@ interface ClasificadorClavePaginationProps {
 
 export default function ClasificadorClavePagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

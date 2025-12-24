@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import Sidebar from '../components/Sidebar';
+// import { useState } from 'react';
+// import Sidebar from '../components/Sidebar';
 
 
 export default function DashboardPage() {
@@ -7,7 +7,8 @@ export default function DashboardPage() {
         <div className="flex h-screen bg-gray-100">
 
             <div className="flex-1 overflow-auto">
-
+            <h2>Dashboard</h2>
+                <p>Bienvenido al sistema.</p>
             </div>
         </div>
         // <div className="bg-red-500 text-white p-4">

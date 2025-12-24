@@ -91,7 +91,7 @@ export interface QuejaItem {
 }
 
 export interface CreateLineaRequest {
-    clavelinea: string;
+    clavelinea?: string;
     clave_n?: string;
     codificacion?: string;
     hilos?: string;

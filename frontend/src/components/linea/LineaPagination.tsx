@@ -15,7 +15,7 @@ interface LineaPaginationProps {
 
 export default function LineaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

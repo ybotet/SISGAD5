@@ -15,7 +15,7 @@ interface TipolineaPaginationProps {
 
 export default function TipolineaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

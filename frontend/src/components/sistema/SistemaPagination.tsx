@@ -15,7 +15,7 @@ interface SistemaPaginationProps {
 
 export default function SistemaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

@@ -15,7 +15,7 @@ interface TipoPizarraPaginationProps {
 
 export default function TipoPizarraPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

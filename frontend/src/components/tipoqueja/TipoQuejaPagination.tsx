@@ -15,7 +15,7 @@ interface TipoQuejaPaginationProps {
 
 export default function TipoQuejaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

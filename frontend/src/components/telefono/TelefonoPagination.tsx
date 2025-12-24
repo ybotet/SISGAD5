@@ -15,7 +15,7 @@ interface TelefonoPaginationProps {
 
 export default function TelefonoPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

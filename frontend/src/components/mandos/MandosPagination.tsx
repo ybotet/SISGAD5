@@ -15,7 +15,7 @@ interface MandosPaginationProps {
 
 export default function MandosPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

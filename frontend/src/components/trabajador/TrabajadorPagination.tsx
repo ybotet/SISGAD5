@@ -15,7 +15,7 @@ interface TrabajadorPaginationProps {
 
 export default function TrabajadorPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

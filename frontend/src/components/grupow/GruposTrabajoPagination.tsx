@@ -15,7 +15,7 @@ interface GruposTrabajoPaginationProps {
 
 export default function GruposTrabajoPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

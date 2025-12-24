@@ -15,7 +15,7 @@ interface CablePaginationProps {
 
 export default function CablePagination({
     pagination,
-    onPageChange,
+    // // onPageChange,
     onLimitChange,
     onNext,
     onPrev

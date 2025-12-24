@@ -15,7 +15,7 @@ interface SenalizacionPaginationProps {
 
 export default function SenalizacionPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

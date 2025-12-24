@@ -15,7 +15,7 @@ interface TipoMovimientoPaginationProps {
 
 export default function TipoMovimientoPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

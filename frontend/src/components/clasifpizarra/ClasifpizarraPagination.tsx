@@ -15,7 +15,7 @@ interface ClasifpizarraPaginationProps {
 
 export default function ClasifpizarraPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

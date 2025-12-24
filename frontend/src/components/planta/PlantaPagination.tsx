@@ -15,7 +15,7 @@ interface PlantaPaginationProps {
 
 export default function PlantaPagination({
     pagination,
-    onPageChange,
+    // onPageChange,
     onLimitChange,
     onNext,
     onPrev

@@ -15,7 +15,7 @@ interface ClasificacionPaginationProps {
 
 export default function ClasificacionPagination({
     pagination,
-    onPageChange,
+    // // onPageChange,
     onLimitChange,
     onNext,
     onPrev

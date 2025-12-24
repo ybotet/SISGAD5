@@ -3,7 +3,7 @@ import api from './api';
 // Interfaces según el modelo de Sistema
 export interface Propietario {
     id_propietario: number;
-    propietario: string;
+    nombre: string;
 }
 
 export interface SistemaItem {
