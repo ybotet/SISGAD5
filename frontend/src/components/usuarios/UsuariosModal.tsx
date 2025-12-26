@@ -41,6 +41,8 @@ export default function UsuariosModal({
   // Actualizar formData cuando cambia editingItem
   useEffect(() => {
     if (editingItem) {
+      const ids = editingItem.tb_rol?.map(rol => rol.id_rol.toString()) || [];
+      const uniqueIds = Array.from(new Set(ids));
       setFormData({
         email: editingItem.email || '',
         password: '', // No mostrar contraseña existente
@@ -48,7 +50,7 @@ export default function UsuariosModal({
         nombre: editingItem.nombre || '',
         apellidos: editingItem.apellidos || '',
         activo: editingItem.activo ? 'true' : 'false',
-        roles: editingItem.tb_rol?.map(rol => rol.id_rol.toString()) || []
+        roles: uniqueIds
       });
     } else {
       // Resetear formulario para nuevo usuario
@@ -132,7 +134,7 @@ export default function UsuariosModal({
         setFormData(prev => ({
           ...prev,
           roles: checked
-            ? [...prev.roles, optionValue]
+            ? (prev.roles.includes(optionValue) ? prev.roles : [...prev.roles, optionValue])
             : prev.roles.filter(role => role !== optionValue)
         }));
       }
@@ -333,15 +335,7 @@ export default function UsuariosModal({
             </div>
           </div>
 
-          {/* Campos hidden para roles seleccionados */}
-          {formData.roles.map(roleId => (
-            <input
-              key={roleId}
-              type="hidden"
-              name="roles"
-              value={roleId}
-            />
-          ))}
+          {/* Nota: los roles se envían desde los checkboxes; no renderizamos inputs hidden para evitar duplicados */}
 
           <div className="flex justify-end space-x-3 mt-6">
             <button

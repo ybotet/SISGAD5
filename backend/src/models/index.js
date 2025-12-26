@@ -19,6 +19,7 @@ const Queja = require('./Queja')(sequelize);
 const Recorrido = require('./Recorrido')(sequelize);
 const Resultadoprueba = require('./Resultadoprueba')(sequelize);
 const Rol = require('./Rol')(sequelize);
+const Roles_Permisos = require('./Roles_Permisos')(sequelize);
 const Senalizacion = require('./Senalizacion')(sequelize);
 const Sistema = require('./Sistema')(sequelize);
 const Telefono = require('./Telefono')(sequelize);
@@ -30,6 +31,7 @@ const Trabajador = require('./Trabajador')(sequelize);
 const Trabajo = require('./Trabajo')(sequelize);
 const TrabajoTrabajadores = require('./Trabajo_trabajadores')(sequelize);
 const User = require('./User')(sequelize);
+const User_Roles = require('./User_Roles')(sequelize);
 
 
 const TbMaterial = require('./tb_material')(sequelize);
@@ -186,12 +188,13 @@ TrabajoTrabajadores.belongsTo(Trabajador, { foreignKey: 'id_trabajador', as: 'tb
 //#endregion
 
 //#region Relaciones de Usuario, Rol y Permiso
-// Usuario <-> Rol (Muchos a Muchos)
-User.belongsToMany(Rol, { through: 'tb_user_roles', foreignKey: 'id_usuario', as: 'tb_rol' });
-Rol.belongsToMany(User, { through: 'tb_user_roles', foreignKey: 'id_rol', as: 'tb_user' });
+// Usuario <-> Rol (Muchos a Muchos) usando modelos through
+User.belongsToMany(Rol, { through: User_Roles, foreignKey: 'id_usuario', otherKey: 'id_rol', as: 'tb_rol' });
+Rol.belongsToMany(User, { through: User_Roles, foreignKey: 'id_rol', otherKey: 'id_usuario', as: 'tb_user' });
 
-Rol.belongsToMany(Permiso, { through: 'tb_roles_permisos', foreignKey: 'id_rol', as: 'tb_permiso' });
-Permiso.belongsToMany(Rol, { through: 'tb_roles_permisos', foreignKey: 'id_permiso', as: 'tb_rol' });
+// Rol <-> Permiso (Muchos a Muchos) usando modelo through
+Rol.belongsToMany(Permiso, { through: Roles_Permisos, foreignKey: 'id_rol', otherKey: 'id_permiso', as: 'tb_permiso' });
+Permiso.belongsToMany(Rol, { through: Roles_Permisos, foreignKey: 'id_permiso', otherKey: 'id_rol', as: 'tb_rol' });
 //#endregion
 
 //#region Relaciones de Movimiento
@@ -249,6 +252,7 @@ module.exports = {
   Recorrido,
   Resultadoprueba,
   Rol,
+  Roles_Permisos,
   Senalizacion,
   Telefono,
   Tipolinea,
@@ -258,5 +262,6 @@ module.exports = {
   Trabajador,
   Trabajo,
   TrabajoTrabajadores,
+  User_Roles,
   User
 };

@@ -1,5 +1,8 @@
 import api from './api'
 
+// La URL de tu backend - puedes usar variables de entorno
+const VITE_FRONT_URL = import.meta.env.VITE_FRONT_URL || 'http://localhost:5173/';
+
 interface LoginCredentials {
     email: string
     password: string
@@ -14,7 +17,7 @@ export const authService = {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         // redirect to login page
-        window.location.href = '/login'
+        window.location.href = VITE_FRONT_URL+'/login'
     },
 
     getToken: () => {

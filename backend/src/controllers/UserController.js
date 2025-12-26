@@ -1,4 +1,4 @@
-const { User, Rol } = require('../models/index');
+const { User, Rol, User_Roles } = require('../models/index');
 const { Op } = require('sequelize');
 
 const usuariosController = {
@@ -33,7 +33,20 @@ const usuariosController = {
 
             res.json({
                 success: true,
-                data: usuarios,
+                data: usuarios.map(u => {
+                    if (u.tb_rol && Array.isArray(u.tb_rol)) {
+                        const uniq = [];
+                        const seen = new Set();
+                        u.tb_rol.forEach(r => {
+                            if (!seen.has(r.id_rol)) {
+                                seen.add(r.id_rol);
+                                uniq.push(r);
+                            }
+                        });
+                        u.tb_rol = uniq;
+                    }
+                    return u;
+                }),
                 pagination: {
                     page: parseInt(page),
                     limit: parseInt(limit),
@@ -73,12 +86,14 @@ const usuariosController = {
                 apellidos
             });
 
-            // Asignar roles si se proporcionaron
+            // Asignar roles si se proporcionaron (gestión directa de la tabla intermedia)
             if (roles && roles.length > 0) {
-                const rolesEncontrados = await Rol.findAll({
-                    where: { id_rol: roles }
-                });
-                await usuario.setRols(rolesEncontrados);
+                const rolesEncontrados = await Rol.findAll({ where: { id_rol: roles } });
+                // Eliminar posibles asignaciones existentes (por seguridad)
+                await User_Roles.destroy({ where: { id_usuario: usuario.id_usuario } });
+                // Insertar las nuevas relaciones
+                const inserts = rolesEncontrados.map(r => ({ id_usuario: usuario.id_usuario, id_rol: r.id_rol }));
+                if (inserts.length > 0) await User_Roles.bulkCreate(inserts);
             }
 
             // Obtener usuario con roles
@@ -90,6 +105,16 @@ const usuariosController = {
                     through: { attributes: [] }
                 }]
             });
+
+            // Asegurar roles únicos antes de responder
+            if (usuarioConRoles && usuarioConRoles.tb_rol && Array.isArray(usuarioConRoles.tb_rol)) {
+                const seen = new Set();
+                usuarioConRoles.tb_rol = usuarioConRoles.tb_rol.filter(r => {
+                    if (seen.has(r.id_rol)) return false;
+                    seen.add(r.id_rol);
+                    return true;
+                });
+            }
 
             res.status(201).json({
                 success: true,
@@ -112,6 +137,8 @@ const usuariosController = {
             const { id } = req.params;
             const { email, nombre, apellidos, activo, roles } = req.body;
 
+            console.log('Datos recibidos para actualizar:', req.body);
+
             const usuario = await User.findByPk(id);
             if (!usuario) {
                 return res.status(404).json({
@@ -128,12 +155,13 @@ const usuariosController = {
                 activo: activo !== undefined ? activo : usuario.activo
             });
 
-            // Actualizar roles si se proporcionaron
+            console.log('roles recibidos para actualizar:', roles);
+            // Actualizar roles si se proporcionaron (gestión directa de la tabla intermedia)
             if (roles) {
-                const rolesEncontrados = await Rol.findAll({
-                    where: { id_rol: roles }
-                });
-                await usuario.setRols(rolesEncontrados);
+                const rolesEncontrados = await Rol.findAll({ where: { id_rol: roles } });
+                await User_Roles.destroy({ where: { id_usuario: usuario.id_usuario } });
+                const inserts = rolesEncontrados.map(r => ({ id_usuario: usuario.id_usuario, id_rol: r.id_rol }));
+                if (inserts.length > 0) await User_Roles.bulkCreate(inserts);
             }
 
             // Obtener usuario actualizado
@@ -145,6 +173,16 @@ const usuariosController = {
                     through: { attributes: [] }
                 }]
             });
+
+            // Asegurar roles únicos antes de responder
+            if (usuarioActualizado && usuarioActualizado.tb_rol && Array.isArray(usuarioActualizado.tb_rol)) {
+                const seen = new Set();
+                usuarioActualizado.tb_rol = usuarioActualizado.tb_rol.filter(r => {
+                    if (seen.has(r.id_rol)) return false;
+                    seen.add(r.id_rol);
+                    return true;
+                });
+            }
 
             res.json({
                 success: true,

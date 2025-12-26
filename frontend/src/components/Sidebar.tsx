@@ -58,9 +58,10 @@ export default function Sidebar() {
     { id: 'operarios', name: 'Operarios', icon: 'ri-team-line' },
     { id: 'estadisticas', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
     {
-      id: 'admin', name: 'Panel Administrativo', icon: 'ri-admin-line',
+      id: 'admin', name: 'Panel administrativo', icon: 'ri-admin-line',
       children: [
-        { id: 'usuarios', name: 'Gestión de Usuarios', icon: 'ri-user-settings-line' },
+        { id: 'usuarios', name: 'Gestión de usuarios', icon: 'ri-user-settings-line' },
+        { id: 'roles', name: 'Lista de roles', icon: 'ri-key-line' },
       ]
     },
   ];

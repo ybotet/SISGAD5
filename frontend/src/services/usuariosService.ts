@@ -118,6 +118,23 @@ export const usuariosService = {
         return response.data.data;
     },
 
+    // Crear rol
+    async createRol(data: { nombre: string; descripcion?: string }) {
+        const response = await api.post<ApiResponse<any>>('/roles', data);
+        return response.data.data;
+    },
+
+    // Actualizar rol
+    async updateRol(id: number, data: { nombre?: string; descripcion?: string }) {
+        const response = await api.put<ApiResponse<any>>(`/roles/${id}`, data);
+        return response.data.data;
+    },
+
+    // Eliminar rol
+    async deleteRol(id: number) {
+        await api.delete(`/roles/${id}`);
+    },
+
     // Crear nuevo usuario (requiere password)
     async createUsuario(data: CreateUsuarioRequest): Promise<Usuario> {
         const response = await api.post<ApiResponse<Usuario>>('/user', data);

@@ -30,7 +30,7 @@ const auth = async (req, res, next) => {
         });
 
         if (!usuario) {
-            console.log('❌ Usuario no encontrado con ID:', decoded.id);
+            console.log('Usuario no encontrado con ID:', decoded.id);
             return res.status(401).json({
                 success: false,
                 message: 'Usuario no válido'
@@ -38,7 +38,7 @@ const auth = async (req, res, next) => {
         }
 
         if (!usuario.activo) {
-            console.log('❌ Usuario inactivo:', decoded.id);
+            console.log('Usuario inactivo:', decoded.id);
             return res.status(401).json({
                 success: false,
                 message: 'Usuario inactivo'
@@ -48,7 +48,7 @@ const auth = async (req, res, next) => {
         req.usuario = usuario;
         next();
     } catch (error) {
-        console.error('❌ Error en autenticación:', error.message);
+        console.error('Error en autenticación:', error.message);
 
         if (error.name === 'JsonWebTokenError') {
             return res.status(401).json({
