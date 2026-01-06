@@ -142,6 +142,9 @@ export interface ApiResponse<T> {
         total: number;
         pages: number;
     };
+    message?: string;
+    errors?: string[];
+    error?: string;
 }
 
 export interface PaginatedResponse<T> {
@@ -217,8 +220,22 @@ export const telefonoService = {
 
     // Crear nuevo teléfono
     async createTelefono(data: CreateTelefonoRequest): Promise<TelefonoItem> {
-        const response = await api.post<ApiResponse<TelefonoItem>>('/telefono', data);
-        return response.data.data;
+        try {
+            const response = await api.post<ApiResponse<TelefonoItem>>('/telefono', data);
+            if (response.data && response.data.success) {
+                return response.data.data;
+            }
+            const err: any = new Error(response.data.message || 'Error al crear el teléfono');
+            err.response = { data: response.data };
+            throw err;
+        } catch (error: any) {
+            // Si la petición falla con un código HTTP (axios error), reenviamos tal cual
+            if (error?.response) throw error;
+            // Si es otro error, lo normalizamos
+            const err: any = new Error(error?.message || 'Error al crear el teléfono');
+            err.response = { data: error?.response?.data || { error: error?.message } };
+            throw err;
+        }
     },
 
     // Actualizar teléfono

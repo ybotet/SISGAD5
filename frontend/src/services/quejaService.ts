@@ -23,7 +23,7 @@ export interface Clave {
 
 export interface Pizarra {
     id_pizarra: number;
-    pizarra: string;
+    nombre: string;
 }
 
 export interface Linea {

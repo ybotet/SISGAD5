@@ -228,6 +228,7 @@ export default function TelefonoPage() {
                 (editingItem ? 'Error al actualizar el teléfono' : 'Error al crear el teléfono');
             setError(errorMessage);
             console.error('Error saving telefono:', err);
+            throw err;
         } finally {
             setSaving(false);
         }

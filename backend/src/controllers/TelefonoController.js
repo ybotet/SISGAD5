@@ -162,7 +162,7 @@ const TelefonoController = {
       if (error.name === 'SequelizeValidationError') {
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          error: 'Error de validación: ' + error.errors.map(err => err.message).join(', '),
           details: error.errors.map(err => err.message)
         });
       }

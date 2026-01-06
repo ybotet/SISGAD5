@@ -33,6 +33,7 @@ export default function TelefonoModal({
     const [mandos, setMandos] = useState<Mando[]>([]);
     const [clasificaciones, setClasificaciones] = useState<Clasificacion[]>([]);
     const [loadingCombos, setLoadingCombos] = useState(false);
+    const [errors, setErrors] = useState<string[] | Record<string, string[]>>([]);
 
     // Cargar combos al abrir el modal
     useEffect(() => {
@@ -90,9 +91,31 @@ export default function TelefonoModal({
         }
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSave(new FormData(e.currentTarget));
+        setErrors([]);
+        try {
+            await onSave(new FormData(e.currentTarget));
+        } catch (err: any) {
+            // Intentar extraer errores de validación en distintos formatos
+            const resp = err?.response?.data;
+            if (resp) {
+                if (Array.isArray(resp.errors)) {
+                    setErrors(resp.errors);
+                } else if (resp.errors && typeof resp.errors === 'object') {
+                    setErrors(resp.errors as Record<string, string[]>);
+                } else if (resp.message) {
+                    setErrors([resp.message]);
+                } else if (resp.error) {
+                    setErrors([resp.error]);
+                } else {
+                    setErrors([err.message || 'Error desconocido']);
+                }
+            } else {
+                setErrors([err?.message || 'Error desconocido']);
+            }
+            console.error('Errores al guardar teléfono:', err);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -112,10 +135,30 @@ export default function TelefonoModal({
                     {editingItem ? 'Editar Teléfono' : 'Nuevo Teléfono'}
                 </h3>
                 <form onSubmit={handleSubmit}>
+                    {Array.isArray(errors) && errors.length > 0 && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+                            <ul className="list-disc ml-5">
+                                {errors.map((err, i) => (
+                                    <li key={i}>{err}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {(!Array.isArray(errors) && Object.keys(errors).length > 0) && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+                            <ul className="list-disc ml-5">
+                                {Object.entries(errors).map(([field, msgs]) => (
+                                    msgs.map((m, idx) => (
+                                        <li key={`${field}-${idx}`}>{field}: {m}</li>
+                                    ))
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Teléfono
+                                Teléfono *
                             </label>
                             <input
                                 type="text"

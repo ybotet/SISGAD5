@@ -57,7 +57,7 @@ export default function QuejaTable({
                         Pizarra
                     </span>
                     <span className="text-xs text-gray-600 font-medium">
-                        {item.tb_pizarra.pizarra}
+                        {item.tb_pizarra.nombre || 'Sin nombre'}
                     </span>
                 </div>
             );

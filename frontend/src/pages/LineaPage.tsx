@@ -226,6 +226,7 @@ export default function LineaPage() {
                 (editingItem ? 'Error al actualizar la línea' : 'Error al crear la línea');
             setError(errorMessage);
             console.error('Error saving linea:', err);
+            throw err;
         } finally {
             setSaving(false);
         }

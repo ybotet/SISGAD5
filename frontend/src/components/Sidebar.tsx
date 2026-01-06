@@ -55,8 +55,8 @@ export default function Sidebar() {
 
       ]
     },
-    { id: 'operarios', name: 'Operarios', icon: 'ri-team-line' },
-    { id: 'estadisticas', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
+    { id: 'operarios', name: 'Trabajadores', icon: 'ri-team-line' },
+    { id: 'stats', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
     {
       id: 'admin', name: 'Panel administrativo', icon: 'ri-admin-line',
       children: [

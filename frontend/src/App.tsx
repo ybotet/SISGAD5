@@ -27,8 +27,10 @@ import TrabajadorPage from './pages/TrabajadorPage';
 import TelefonoPage from './pages/TelefonoPage';
 import LineaPage from './pages/LineaPage';
 import QuejaPage from './pages/quejaPage';
+import PizarraPage from './pages/PizarraPage';
 import UsuariosPage from './pages/auth/admin/UsuariosPage';
 import RolesPage from './pages/auth/admin/RolesPage';
+import StatsPage from './pages/StatsPage';
 
 export default function App() {
 
@@ -36,13 +38,15 @@ export default function App() {
 
   return (
     <Routes>
-      <Route path="login" element={<LoginPage />} />
+      <Route path="auth/login" element={<LoginPage />} />
       <Route path="/debug-login" element={<DebugLogin />} />
       <Route path="/sistema/*" element={<SistemaLayout />}>
         <Route index element={<DashboardPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="main/telefonos" element={<TelefonoPage />} />
         <Route path="main/lineas" element={<LineaPage />} />
+        <Route path="main/pizarras" element={<PizarraPage />} />
+        <Route path="stats" element={<StatsPage />} />
         <Route path="main/quejas" element={<QuejaPage />} />
         <Route path="operarios" element={<TrabajadorPage />} />
         <Route path="admin/usuarios" element={<UsuariosPage />} />

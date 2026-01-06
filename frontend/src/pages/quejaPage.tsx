@@ -269,6 +269,7 @@ export default function QuejaPage() {
             const errorMessage = err?.response?.data?.error || err?.message ||
                 (editingItem ? 'Error al actualizar la queja' : 'Error al crear la queja');
             setError(errorMessage);
+            throw err;
         } finally {
             setSaving(false);
         }

@@ -1,7 +1,7 @@
 import api from './api'
 
 // La URL de tu backend - puedes usar variables de entorno
-const VITE_FRONT_URL = import.meta.env.VITE_FRONT_URL || 'http://localhost:5173/';
+// const VITE_FRONT_URL = import.meta.env.VITE_FRONT_URL || 'http://localhost:5173/';
 
 interface LoginCredentials {
     email: string
@@ -16,8 +16,9 @@ export const authService = {
     logout: () => {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        // redirect to login page
-        window.location.href = VITE_FRONT_URL+'/login'
+        // redirect to login page using Vite BASE_URL so it works in prod subfolder
+        const base = import.meta.env.BASE_URL || '/'
+        window.location.href = base + 'auth/login'
     },
 
     getToken: () => {

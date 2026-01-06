@@ -12,7 +12,7 @@ const PizarraController = {
       const {
         page = 1,
         limit = 10,
-        sortBy = 'createdAt',
+        sortBy = 'updatedAt',
         sortOrder = 'DESC',
         search = '',
         ...filters
@@ -24,7 +24,7 @@ const PizarraController = {
       const whereClause = {};
       if (search) {
         whereClause[Op.or] = [
-          { pizarra: { [Op.iLike]: `%${search}%` } }
+          { nombre: { [Op.iLike]: `%${search}%` } }
         ];
       }
 

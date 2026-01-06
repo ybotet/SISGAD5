@@ -48,6 +48,7 @@ export default function QuejaModal({
     const [lineas, setLineas] = useState<Linea[]>([]);
     const [probadores, setProbadores] = useState<any[]>([]);
     const [loadingCombos, setLoadingCombos] = useState(false);
+    const [errors, setErrors] = useState<string[] | Record<string, string[]>>([]);
 
     // Cargar combos al abrir el modal
     useEffect(() => {
@@ -148,9 +149,30 @@ export default function QuejaModal({
         }
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSave(new FormData(e.currentTarget));
+        setErrors([]);
+        try {
+            await onSave(new FormData(e.currentTarget));
+        } catch (err: any) {
+            const resp = err?.response?.data;
+            if (resp) {
+                if (Array.isArray(resp.details) || Array.isArray(resp.errors)) {
+                    setErrors(resp.details || resp.errors);
+                } else if ((resp.details && typeof resp.details === 'object') || (resp.errors && typeof resp.errors === 'object')) {
+                    setErrors(resp.details || resp.errors);
+                } else if (resp.message) {
+                    setErrors([resp.message]);
+                } else if (resp.error) {
+                    setErrors([resp.error]);
+                } else {
+                    setErrors([err.message || 'Error desconocido']);
+                }
+            } else {
+                setErrors([err?.message || 'Error desconocido']);
+            }
+            console.error('Errores al guardar queja:', err);
+        }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -247,7 +269,7 @@ export default function QuejaModal({
                             <option value="">Seleccione una pizarra</option>
                             {pizarras.map((pizarra) => (
                                 <option key={pizarra.id_pizarra} value={pizarra.id_pizarra}>
-                                    {pizarra.pizarra}
+                                    {pizarra.nombre}
                                 </option>
                             ))}
                         </select>
@@ -278,25 +300,29 @@ export default function QuejaModal({
                     {editingItem ? 'Editar Queja' : 'Nueva Queja'}
                 </h3>
                 <form onSubmit={handleSubmit}>
+                    {Array.isArray(errors) && errors.length > 0 && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+                            <ul className="list-disc ml-5">
+                                {errors.map((err, i) => (
+                                    <li key={i}>{err}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {(!Array.isArray(errors) && Object.keys(errors).length > 0) && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+                            <ul className="list-disc ml-5">
+                                {Object.entries(errors).map(([field, msgs]) => (
+                                    msgs.map((m, idx) => (
+                                        <li key={`${field}-${idx}`}>{field}: {m}</li>
+                                    ))
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Columna 1 - Información básica */}
                         <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Número de Reporte *
-                                </label>
-                                <input
-                                    type="number"
-                                    name="num_reporte"
-                                    value={formData.num_reporte}
-                                    onChange={handleInputChange}
-                                    required
-                                    disabled={saving}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    placeholder="Ej: 1001"
-                                />
-                            </div>
-
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Fecha *
@@ -310,6 +336,30 @@ export default function QuejaModal({
                                     disabled={saving}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                 />
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">
+                                    Seleccionar Probador *
+                                </label>
+                                <select
+                                    name="probador"
+                                    value={formData.probador}
+                                    onChange={handleInputChange}
+                                    required
+                                    disabled={saving || loadingCombos}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                >
+                                    <option value="">Seleccione un probador</option>
+                                    {probadores.map((probador) => (
+                                        <option key={probador.id_trabajador} value={probador.id_trabajador}>
+                                            {probador.clave_trabajador}
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className="text-xs text-gray-500">
+                                    {probadores.length} probadores disponibles
+                                </p>
                             </div>
 
                             <div>
@@ -450,29 +500,7 @@ export default function QuejaModal({
                                     />
                                 </div>
                             </div>
-                            <div className="space-y-2">
-                                <label className="block text-sm font-medium text-gray-700">
-                                    Seleccionar Probador *
-                                </label>
-                                <select
-                                    name="probador"
-                                    value={formData.probador}
-                                    onChange={handleInputChange}
-                                    required
-                                    disabled={saving || loadingCombos}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                >
-                                    <option value="">Seleccione un probador</option>
-                                    {probadores.map((probador) => (
-                                        <option key={probador.id_trabajador} value={probador.id_trabajador}>
-                                            {probador.clave_trabajador}
-                                        </option>
-                                    ))}
-                                </select>
-                                <p className="text-xs text-gray-500">
-                                    {probadores.length} probadores disponibles
-                                </p>
-                            </div>
+
 
                         </div>
                     </div>

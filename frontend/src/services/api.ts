@@ -35,7 +35,10 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             // Redirigir a login si no está autorizado
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            // Usar BASE_URL de Vite para respetar el `base` en producción
+            const base = import.meta.env.BASE_URL || '/';
+            // redirigir a /auth/login para mantener consistencia
+            window.location.href = base + 'auth/login';
         }
         return Promise.reject(error);
     }
