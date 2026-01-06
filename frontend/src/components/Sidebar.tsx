@@ -36,7 +36,7 @@ export default function Sidebar() {
       name: 'Nomencladores',
       icon: 'ri-settings-3-line',
       children: [
-        { id: 'cable', name: 'Cable', icon: 'ri-wireless-line' },
+        { id: 'cable', name: 'Cable', icon: 'ri-git-branch-line' },
         { id: 'clasificacion', name: 'Clasificación', icon: 'ri-price-tag-3-line' },
         { id: 'clasificadorclave', name: 'Clasificador de Clave', icon: 'ri-key-line' },
         { id: 'clasifpizarra', name: 'Clasificador de Pizarra', icon: 'ri-layout-grid-line' },

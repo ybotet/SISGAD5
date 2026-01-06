@@ -18,7 +18,7 @@ export default function CableStats({
             <div className="bg-white rounded-lg shadow p-4">
                 <div className="flex items-center">
                     <div className="bg-blue-500 rounded-lg p-2 w-10 h-10 flex items-center justify-center">
-                        <i className="ri-wire-line text-white"></i>
+                        <i className="ri-git-branch-line text-white"></i>
                     </div>
                     <div className="ml-3">
                         <p className="text-sm font-medium text-gray-500">Total General</p>
