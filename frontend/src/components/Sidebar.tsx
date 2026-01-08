@@ -11,7 +11,7 @@ export default function Sidebar() {
 
 
   const menuItems = [
-    { id: 'dashboard', name: 'Dashboard', icon: 'ri-dashboard-line' },
+    { id: '', name: 'Dashboard', icon: 'ri-dashboard-line' },
     {
       id: 'main',
       name: 'Módulos Principales',
