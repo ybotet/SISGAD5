@@ -74,8 +74,37 @@ export default function UsuariosPage() {
 
             setItems(response.data);
             setPagination(response.pagination);
-        } catch (err) {
-            const errorMsg = 'Error al cargar los usuarios. Por favor, intente nuevamente.';
+        } catch (err: unknown) {
+            // Tipar correctamente el error
+            let errorMsg = 'Error al cargar los usuarios.';
+
+            // Verificar si es un error de Axios
+            if (typeof err === 'object' && err !== null && 'response' in err) {
+                const axiosError = err as {
+                    response?: {
+                        data?: {
+                            message?: string;
+                        };
+                        status?: number;
+                    };
+                    message?: string;
+                };
+
+                if (axiosError.response?.data?.message) {
+                    // Usa el mensaje del backend
+                    errorMsg = axiosError.response.data.message;
+                } else if (axiosError.message) {
+                    // Usa el mensaje del error
+                    errorMsg = axiosError.message;
+                } else if (axiosError.response?.status === 403) {
+                    errorMsg = 'No tienes permisos para acceder a esta sección.';
+                }
+            }
+            // Verificar si es un Error estándar
+            else if (err instanceof Error) {
+                errorMsg = err.message;
+            }
+
             setError(errorMsg);
             console.error('Error loading usuarios:', err);
         } finally {

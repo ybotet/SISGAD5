@@ -1,5 +1,4 @@
 Quejas.
-- Generador de num_reporte.
 - Calculo de prioridad.
 
 Cliente
@@ -7,3 +6,10 @@ Cliente
 
 Movimiento
 -escoger telefono o linea o (pizarra) y luego realizar un movimiento
+
+Propietario
+-solo conexion en movimientos
+
+pizarra
+-validaciones
+
