@@ -22,7 +22,7 @@ export default function LoginForm() {
             <h2 className="text-2xl mb-4">Iniciar sesión</h2>
             {error && <div className="text-red-600 mb-2">{error}</div>}
             <div className="mb-3">
-                <label className="block mb-1">Email</label>
+                <label className="block mb-1">Correo</label>
                 <input className="w-full border px-2 py-1" value={email} onChange={e => setEmail(e.target.value)} />
             </div>
             <div className="mb-3">

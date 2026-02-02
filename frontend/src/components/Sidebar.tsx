@@ -4,65 +4,75 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 
+type MenuItem = {
+  id: string;
+  name: string;
+  icon: string;
+  permission?: string;     // permiso opcional
+  children?: MenuItem[];
+};
+
 export default function Sidebar() {
   const navigate = useNavigate(); // 👈 hook de navegación
   const [isCollapsed, setIsCollapsed] = useState(false);
-  const { usuario, logout } = useAuth();
+  const { usuario, logout, hasPermission } = useAuth();
 
 
-  const menuItems = [
-    { id: '', name: 'Dashboard', icon: 'ri-dashboard-line' },
+  const menuItems: MenuItem[] = [
+    { id: '', name: 'Dashboard', icon: 'ri-dashboard-line' }, // solo autenticado
     {
       id: 'main',
       name: 'Módulos Principales',
       icon: 'ri-folder-line',
       children: [
-        { id: 'telefonos', name: 'Teléfonos', icon: 'ri-phone-line' },
-        { id: 'lineas', name: 'Líneas', icon: 'ri-git-branch-line' },
-        { id: 'pizarras', name: 'Pizarras', icon: 'ri-dashboard-line' },
-        { id: 'quejas', name: 'Quejas (Incidencias)', icon: 'ri-error-warning-line' },
-      ]
+        { id: 'telefonos', name: 'Teléfonos', icon: 'ri-phone-line', permission: 'telefonos.ver' },
+        { id: 'lineas', name: 'Líneas', icon: 'ri-git-branch-line', permission: 'lineas.ver' },
+        { id: 'pizarras', name: 'Pizarras', icon: 'ri-dashboard-line', permission: 'pizarras.ver' },
+        { id: 'quejas', name: 'Quejas (Incidencias)', icon: 'ri-error-warning-line', permission: 'quejas.ver' },
+      ],
     },
-    {
-      id: 'operaciones',
-      name: 'Operaciones',
-      icon: 'ri-briefcase-line',
-      children: [
-        { id: 'movimientos', name: 'Movimientos', icon: 'ri-arrow-left-right-line' },
-      ]
-    },
+    // {
+    //   id: 'operaciones',
+    //   name: 'Operaciones',
+    //   icon: 'ri-briefcase-line',
+    //   children: [
+    //     { id: 'movimientos', name: 'Movimientos', icon: 'ri-arrow-left-right-line' },
+    //   ]
+    // },
     {
       id: 'nomencladores',
       name: 'Nomencladores',
       icon: 'ri-settings-3-line',
       children: [
-        { id: 'cable', name: 'Cable', icon: 'ri-git-branch-line' },
-        { id: 'clasificacion', name: 'Clasificación', icon: 'ri-price-tag-3-line' },
-        { id: 'clasificadorclave', name: 'Clasificador de Clave', icon: 'ri-key-line' },
-        { id: 'clasifpizarra', name: 'Clasificador de Pizarra', icon: 'ri-layout-grid-line' },
-        { id: 'clave', name: 'Clave', icon: 'ri-key-line' },
-        { id: 'grupostrabajo', name: 'Grupos de Trabajo', icon: 'ri-group-line' },
-        { id: 'mandos', name: 'Mandos', icon: 'ri-remote-control-line' },
-        { id: 'planta', name: 'Plantas', icon: 'ri-building-line' },
-        { id: 'propietarios', name: 'Propietarios', icon: 'ri-user-line' },
-        { id: 'resultadoprueba', name: 'Resultado de la Prueba', icon: 'ri-test-tube-line' },
-        { id: 'senalizaciones', name: 'Señalizaciones', icon: 'ri-signal-tower-line' },
-        { id: 'sistema', name: 'Sistema', icon: 'ri-computer-line' },
-        { id: 'tipolinea', name: 'Tipo de Línea', icon: 'ri-git-branch-line' },
-        { id: 'tipomovimientos', name: 'Tipo de Movimiento', icon: 'ri-arrow-left-right-line' },
-        { id: 'tipopizarra', name: 'Tipo de Pizarra', icon: 'ri-layout-grid-line' },
-        { id: 'tipoqueja', name: 'Tipo de Queja', icon: 'ri-feedback-line' },
+        { id: 'cable', name: 'Cable', icon: 'ri-git-branch-line', permission: 'nomencladores.gestionar' },
+        { id: 'clasificacion', name: 'Clasificación', icon: 'ri-price-tag-3-line', permission: 'nomencladores.gestionar' },
+        { id: 'clasificadorclave', name: 'Clasificador de Clave', icon: 'ri-key-line', permission: 'nomencladores.gestionar' },
+        { id: 'clasifpizarra', name: 'Clasificador de Pizarra', icon: 'ri-layout-grid-line', permission: 'nomencladores.gestionar' },
+        { id: 'clave', name: 'Clave', icon: 'ri-key-line', permission: 'nomencladores.gestionar' },
+        { id: 'grupostrabajo', name: 'Grupos de Trabajo', icon: 'ri-group-line', permission: 'nomencladores.gestionar' },
+        { id: 'mandos', name: 'Mandos', icon: 'ri-remote-control-line', permission: 'nomencladores.gestionar' },
+        { id: 'planta', name: 'Plantas', icon: 'ri-building-line', permission: 'nomencladores.gestionar' },
+        { id: 'propietarios', name: 'Propietarios', icon: 'ri-user-line', permission: 'nomencladores.gestionar' },
+        { id: 'resultadoprueba', name: 'Resultado de la Prueba', icon: 'ri-test-tube-line', permission: 'nomencladores.gestionar' },
+        { id: 'senalizaciones', name: 'Señalizaciones', icon: 'ri-signal-tower-line', permission: 'nomencladores.gestionar' },
+        { id: 'sistema', name: 'Sistema', icon: 'ri-computer-line', permission: 'nomencladores.gestionar' },
+        { id: 'tipolinea', name: 'Tipo de Línea', icon: 'ri-git-branch-line', permission: 'nomencladores.gestionar' },
+        { id: 'tipomovimientos', name: 'Tipo de Movimiento', icon: 'ri-arrow-left-right-line', permission: 'nomencladores.gestionar' },
+        { id: 'tipopizarra', name: 'Tipo de Pizarra', icon: 'ri-layout-grid-line', permission: 'nomencladores.gestionar' },
+        { id: 'tipoqueja', name: 'Tipo de Queja', icon: 'ri-feedback-line', permission: 'nomencladores.gestionar' },
 
       ]
     },
     { id: 'operarios', name: 'Trabajadores', icon: 'ri-team-line' },
     { id: 'stats', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
     {
-      id: 'admin', name: 'Panel administrativo', icon: 'ri-admin-line',
+      id: 'admin',
+      name: 'Panel administrativo',
+      icon: 'ri-admin-line',
       children: [
-        { id: 'usuarios', name: 'Gestión de usuarios', icon: 'ri-user-settings-line' },
-        { id: 'roles', name: 'Lista de roles', icon: 'ri-key-line' },
-      ]
+        { id: 'usuarios', name: 'Gestión de usuarios', icon: 'ri-user-settings-line', permission: 'usuarios.ver' },
+        { id: 'roles', name: 'Lista de roles', icon: 'ri-key-line', permission: 'roles.ver' },
+      ],
     },
   ];
 
@@ -80,6 +90,19 @@ export default function Sidebar() {
         : [...prev, itemId]
     );
   };
+
+  // Helpers para filtrar por permisos
+  const canSeeItem = (item: MenuItem): boolean => {
+    if (item.permission && !hasPermission(item.permission)) {
+      return false;
+    }
+    if (item.children && item.children.length > 0) {
+      return item.children.some(canSeeItem);
+    }
+    return true;
+  };
+
+  const filteredMenuItems = menuItems.filter(canSeeItem);
 
   const baseUrl = import.meta.env.VITE_BASE_URL || '/';
 
@@ -109,7 +132,7 @@ export default function Sidebar() {
 
       {/* Menu Items */}
       <nav className="p-2">
-        {menuItems.map((item) => (
+        {filteredMenuItems.map((item) => (
           <div key={item.id} className="mb-1">
             <button
               onClick={() => {
@@ -137,18 +160,20 @@ export default function Sidebar() {
             {/* Submenus  */}
             {!isCollapsed && item.children && expandedItems.includes(item.id) && (
               <div className="ml-4 mt-1 space-y-1">
-                {item.children.map((child) => (
-                  <button
-                    key={child.id}
-                    onClick={() => handleNavigation(`/sistema/${item.id}/${child.id}`)}
-                    className={`w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-blue-800 transition-colors text-sm`}
-                  >
-                    <div className="w-4 h-4 flex items-center justify-center">
-                      <i className={`${child.icon} text-sm`}></i>
-                    </div>
-                    <span>{child.name}</span>
-                  </button>
-                ))}
+                {item.children
+                  .filter(canSeeItem) // aquí también filtramos los hijos
+                  .map((child) => (
+                    <button
+                      key={child.id}
+                      onClick={() => handleNavigation(`/sistema/${item.id}/${child.id}`)}
+                      className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-blue-800 transition-colors text-sm"
+                    >
+                      <div className="w-4 h-4 flex items-center justify-center">
+                        <i className={`${child.icon} text-sm`}></i>
+                      </div>
+                      <span>{child.name}</span>
+                    </button>
+                  ))}
               </div>
             )}
           </div>

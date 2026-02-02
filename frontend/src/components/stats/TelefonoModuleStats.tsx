@@ -1,4 +1,19 @@
 import { useEffect, useState } from 'react';
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    LineChart,
+    Line,
+    PieChart,
+    Pie,
+    Cell
+} from 'recharts';
 import type { TelefonoItem } from '../../services/telefonoService';
 import { telefonoService } from '../../services/telefonoService';
 
@@ -67,13 +82,44 @@ export default function TelefonoModuleStats() {
         yearGroups[0]?.[1] || 0
     );
 
+    // Datos para gráfico de barras verticales (extensiones)
+    const barData = extGroups.slice(0, 10).map(([name, value]) => ({
+        name: `${name} ext.`,
+        cantidad: value
+    }));
+
+    // Datos para gráfico de líneas (años)
+    const lineData = yearGroups.sort((a, b) => a[0].localeCompare(b[0])).map(([year, count]) => ({
+        year: year,
+        cantidad: count
+    }));
+
+    // Datos para gráfico de pastel (clasificación)
+    const pieData = clasifGroups.slice(0, 10).map(([name, value]) => ({
+        name: name.toString(),
+        value: value
+    }));
+
+    const PIE_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#ff7c7c', '#8dd1e1', '#d084d0'];
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Gráfico de barras verticales para extensiones */}
             <div className="bg-white rounded-lg shadow p-4">
                 <h4 className="font-semibold mb-3">Teléfonos por extensiones</h4>
-                {extGroups.slice(0, 10).map(([k, v]) => (
-                    <SimpleBar key={k} label={`${k} extensiones`} value={v} max={maxCount} />
-                ))}
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                        data={barData}
+                        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="cantidad" fill="#8884d8" />
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
 
             <div className="bg-white rounded-lg shadow p-4">
@@ -83,18 +129,40 @@ export default function TelefonoModuleStats() {
                 ))}
             </div>
 
+            {/* Gráfico de líneas para años */}
             <div className="bg-white rounded-lg shadow p-4">
                 <h4 className="font-semibold mb-3">Teléfonos creados por año</h4>
-                {yearGroups.map(([k, v]) => (
-                    <SimpleBar key={k} label={k.toString()} value={v} max={maxCount} />
-                ))}
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={lineData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="year" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="cantidad" stroke="#8884d8" strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>
             </div>
 
             <div className="bg-white rounded-lg shadow p-4">
                 <h4 className="font-semibold mb-3">Teléfonos por clasificación</h4>
-                {clasifGroups.slice(0, 10).map(([k, v]) => (
-                    <SimpleBar key={k} label={k.toString()} value={v} max={maxCount} />
-                ))}
+                <ResponsiveContainer width="100%" height={350}>
+                    <PieChart>
+                        <Pie
+                            data={pieData}
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={150}
+                            dataKey="value"
+                            label={({ name, percent = 0 }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        >
+                            {pieData.map((_, index) => (
+                                <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                    </PieChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );

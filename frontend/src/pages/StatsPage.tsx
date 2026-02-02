@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { TelefonoModuleStats } from '../components/stats';
+import {
+    TelefonoModuleStats,
+    LineaModuleStats,
+    QuejaModuleStats,
+    PizarraModuleStats,
+    TrabajadorModuleStats
+} from '../components/stats';
 
 export default function StatsPage() {
     const [module, setModule] = useState('telefono');
@@ -12,7 +18,11 @@ export default function StatsPage() {
                     <p className="text-gray-600">Visualizaciones agregadas por módulo</p>
                 </div>
                 <div>
-                    <select value={module} onChange={(e) => setModule(e.target.value)} className="border rounded px-3 py-2">
+                    <select
+                        value={module}
+                        onChange={(e) => setModule(e.target.value)}
+                        className="border rounded px-3 py-2"
+                    >
                         <option value="telefono">Teléfonos</option>
                         <option value="linea">Líneas</option>
                         <option value="pizarra">Pizarras</option>
@@ -23,10 +33,10 @@ export default function StatsPage() {
             </div>
 
             {module === 'telefono' && <TelefonoModuleStats />}
-
-            {module !== 'telefono' && (
-                <div className="bg-white rounded-lg shadow p-6">Por implementar: estadísticas para {module}</div>
-            )}
+            {module === 'linea' && <LineaModuleStats />}
+            {module === 'pizarra' && <PizarraModuleStats />}
+            {module === 'queja' && <QuejaModuleStats />}
+            {module === 'trabajador' && <TrabajadorModuleStats />}
         </div>
     );
 }

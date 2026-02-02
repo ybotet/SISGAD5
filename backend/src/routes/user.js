@@ -13,7 +13,7 @@ router.use(auth);
 // router.put('/:id', usuariosController.actualizarUser);
 // router.delete('/:id', usuariosController.eliminarUser);
 
-router.get('/', tienePermiso('usuarios.leer'), usuariosController.obtenerUsers);
+router.get('/', tienePermiso('usuarios.ver'), usuariosController.obtenerUsers);
 router.post('/', tienePermiso('usuarios.crear'), usuariosController.crearUser);
 router.put('/:id', tienePermiso('usuarios.actualizar'), usuariosController.actualizarUser);
 router.delete('/:id', tienePermiso('usuarios.eliminar'), usuariosController.eliminarUser);

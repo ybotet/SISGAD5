@@ -1,6 +1,6 @@
 // src/App.tsx
 import { Routes, Route } from 'react-router-dom';
-
+import ProtectedRoute from './components/ProtectedRoute';
 import SistemaLayout from './layouts/SistemaLayout';
 import LoginPage from './pages/auth/LoginPage';
 
@@ -41,32 +41,122 @@ export default function App() {
       <Route path="auth/login" element={<LoginPage />} />
       <Route path="/debug-login" element={<DebugLogin />} />
       <Route path="/sistema/*" element={<SistemaLayout />}>
+        <Route
+          index
+          element={
+            <ProtectedRoute /* sin permiso concreto, solo autenticado */>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
         <Route index element={<DashboardPage />} />
         <Route path="profile" element={<ProfilePage />} />
-        <Route path="main/telefonos" element={<TelefonoPage />} />
+        <Route
+          path="main/telefonos"
+          element={
+            <ProtectedRoute permission="telefonos.ver">
+              <TelefonoPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="main/lineas" element={<LineaPage />} />
         <Route path="main/pizarras" element={<PizarraPage />} />
         <Route path="stats" element={<StatsPage />} />
         <Route path="main/quejas" element={<QuejaPage />} />
         <Route path="operarios" element={<TrabajadorPage />} />
-        <Route path="admin/usuarios" element={<UsuariosPage />} />
-        <Route path="admin/roles" element={<RolesPage />} />
-        <Route path="nomencladores/clasificacion" element={<ClasificacionPage type='' />} />
-        <Route path="nomencladores/mandos" element={<MandosPage />} />
-        <Route path="nomencladores/grupostrabajo" element={<GruposTrabajoPage />} />
-        <Route path="nomencladores/propietarios" element={<PropietariosPage />} />
-        <Route path="nomencladores/tipomovimientos" element={<TipoMovimientoPage />} />
-        <Route path="nomencladores/tipolinea" element={<TipolineaPage />} />
-        <Route path="nomencladores/clasificadorclave" element={<ClasificadorClavePage />} />
-        <Route path="nomencladores/clasifpizarra" element={<ClasifpizarraPage />} />
-        <Route path="nomencladores/tipoqueja" element={<TipoQuejaPage />} />
-        <Route path="nomencladores/cable" element={<CablePage />} />
-        <Route path="nomencladores/planta" element={<PlantaPage />} />
-        <Route path="nomencladores/tipopizarra" element={<TipoPizarraPage />} />
-        <Route path="nomencladores/clave" element={<ClavePage />} />
-        <Route path="nomencladores/resultadoprueba" element={<ResultadoPruebaPage />} />
-        <Route path="nomencladores/senalizaciones" element={<SenalizacionPage />} />
-        <Route path="nomencladores/sistema" element={<SistemaPage />} />
+        <Route path="admin/usuarios" element={
+          <ProtectedRoute permission="usuarios.ver">
+            <UsuariosPage />
+          </ProtectedRoute>
+        } />
+        <Route
+          path="admin/roles"
+          element={
+            <ProtectedRoute permission="roles.ver">
+              <RolesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="nomencladores/clasificacion" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <ClasificacionPage type=''/>
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/mandos" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <MandosPage />
+          </ProtectedRoute> } 
+        />
+        <Route path="nomencladores/grupostrabajo" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <GruposTrabajoPage />
+            </ProtectedRoute>} 
+          />
+        <Route path="nomencladores/propietarios" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <PropietariosPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/tipomovimientos" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <TipoMovimientoPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/tipolinea" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <TipolineaPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/clasificadorclave" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <ClasificadorClavePage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/clasifpizarra" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <ClasifpizarraPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/tipoqueja" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <TipoQuejaPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/cable" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <CablePage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/planta" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <PlantaPage />
+          </ProtectedRoute>  } 
+        /> 
+        <Route path="nomencladores/tipopizarra" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <TipoPizarraPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/clave" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <ClavePage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/resultadoprueba" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <ResultadoPruebaPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/senalizaciones" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <SenalizacionPage />
+          </ProtectedRoute>} 
+        />
+        <Route path="nomencladores/sistema" element={
+          <ProtectedRoute permission="nomencladores.gestionar">
+            <SistemaPage />
+          </ProtectedRoute>} 
+        />
       </Route>
 
     </Routes>
