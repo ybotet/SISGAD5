@@ -6,6 +6,6 @@ const { tienePermiso } = require('../middleware/permissions');
 
 router.use(auth);
 
-router.get('/', tienePermiso('usuarios.leer'), rolesController.obtenerRoles);
+router.get('/', tienePermiso('usuarios.ver'), rolesController.obtenerRoles);
 
 module.exports = router;
