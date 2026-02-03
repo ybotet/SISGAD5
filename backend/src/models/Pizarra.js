@@ -23,6 +23,14 @@ module.exports = (sequelize) => {
     direccion: {
       type: DataTypes.STRING,
       allowNull: true,
+      validate:{
+        notNull:{
+          msg: 'La dirección es obligatoria'
+        },
+        notEmpty: {
+          msg: 'la dirección no puede estar vacía'
+        }
+      }
     },
     observacion: {
       type: DataTypes.STRING,

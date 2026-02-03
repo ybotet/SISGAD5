@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const TrabajadorController = require('../controllers/TrabajadorController');
+const Trabajador = require('../models/Trabajador');
 
 /**
  * @route   GET /api/tbTrabajador
@@ -8,6 +9,7 @@ const TrabajadorController = require('../controllers/TrabajadorController');
  * @access  Public
  */
 router.get('/', TrabajadorController.getAll);
+router.get('/getProbadores', TrabajadorController.getProbadores);
 
 /**
  * @route   GET /api/tbTrabajador/:id
@@ -36,5 +38,7 @@ router.put('/:id', TrabajadorController.update);
  * @access  Public
  */
 router.delete('/:id', TrabajadorController.delete);
+
+
 
 module.exports = router;

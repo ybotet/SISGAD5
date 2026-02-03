@@ -35,11 +35,11 @@ export default function PizarraModal({ show, editingItem, saving, onClose, onSav
                 <h3 className="text-lg font-bold mb-4">{editingItem ? 'Editar Pizarra' : 'Nueva Pizarra'}</h3>
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label className="block text-sm text-gray-600">Nombre</label>
+                        <label className="block text-sm text-gray-600">Nombre *</label>
                         <input name="nombre" defaultValue={editingItem?.nombre || ''} className="w-full border rounded px-3 py-2" />
                     </div>
                     <div className="mb-3">
-                        <label className="block text-sm text-gray-600">Dirección</label>
+                        <label className="block text-sm text-gray-600">Dirección *</label>
                         <input name="direccion" defaultValue={editingItem?.direccion || ''} className="w-full border rounded px-3 py-2" />
                     </div>
                     <div className="mb-3">

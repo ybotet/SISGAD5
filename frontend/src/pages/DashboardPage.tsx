@@ -102,7 +102,7 @@ export default function DashboardPage() {
                     ))}
                 </div>
 
-                <div className="bg-white rounded-lg shadow p-6 mb-6">
+                {/* <div className="bg-white rounded-lg shadow p-6 mb-6">
                     <h2 className="text-lg font-medium mb-4">Acciones Rápidas</h2>
                     <div className="flex flex-wrap gap-3">
                         <button onClick={() => navigate('/sistema/main/quejas')} className="bg-blue-800 text-white px-5 py-2 rounded-md shadow">+ Nueva Queja</button>
@@ -110,7 +110,7 @@ export default function DashboardPage() {
                         <button onClick={() => navigate('/sistema/operarios')} className="bg-violet-600 text-white px-5 py-2 rounded-md shadow">Nuevo trabajador</button>
                         <button onClick={() => navigate('/sistema/stats')} className="bg-orange-500 text-white px-5 py-2 rounded-md shadow">Ver Estadísticas</button>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="bg-white rounded-lg shadow p-6">

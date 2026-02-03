@@ -231,7 +231,7 @@ export const quejaService = {
 
     //Obtener probadores para combo
     async getProbadores(): Promise<Trabajador[]> {
-        const response = await api.get<ApiResponse<Trabajador[]>>('/trabajador?limit=100');
+        const response = await api.get<ApiResponse<Trabajador[]>>('/trabajador/getProbadores');
         return response.data.data;
     },
 

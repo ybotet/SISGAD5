@@ -218,7 +218,43 @@ const TrabajadorController = {
         error: 'Error eliminando Trabajador'
       });
     }
-  }
+  },
+
+  async getProbadores(req, res) {
+    try {
+        const data = await Trabajador.findAll({
+          include: [{
+            model: Grupow, // Asegúrate de importar el modelo Grupow
+            as: 'tb_grupow', // Usa el alias que hayas definido en la asociación
+            required: true, // Hace un INNER JOIN
+            where: {
+                grupo: 'Probadores'
+            }
+          }]
+        });
+        if (!data || data.length === 0) {
+          return res.json({
+              success: true,
+              data: [],
+              message: 'No se encontraron probadores'
+          });
+      }
+        console.log(data)
+        res.json({
+            success: true,
+            data: data
+        });
+    } catch (error) {
+        console.error('Error en TrabajadorController.getProbadores:', error);
+        res.status(500).json({
+            success: false,
+            error: 'Error interno del servidor'
+        });
+    }
+}
 };
+
+
+
 
 module.exports = TrabajadorController;
