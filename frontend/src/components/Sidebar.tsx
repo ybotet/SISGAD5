@@ -63,15 +63,15 @@ export default function Sidebar() {
 
       ]
     },
-    { id: 'operarios', name: 'Trabajadores', icon: 'ri-team-line' },
-    { id: 'stats', name: 'Estadísticas', icon: 'ri-bar-chart-line' },
+    { id: 'operarios', name: 'Trabajadores', icon: 'ri-team-line', permission: 'trabajadores.gestionar' },
+    { id: 'stats', name: 'Estadísticas', icon: 'ri-bar-chart-line', permission: 'estadisticas.ver' },
     {
       id: 'admin',
       name: 'Panel administrativo',
       icon: 'ri-admin-line',
       children: [
         { id: 'usuarios', name: 'Gestión de usuarios', icon: 'ri-user-settings-line', permission: 'usuarios.ver' },
-        { id: 'roles', name: 'Lista de roles', icon: 'ri-key-line', permission: 'roles.ver' },
+        // { id: 'roles', name: 'Lista de roles', icon: 'ri-key-line', permission: 'roles.ver' },
       ],
     },
   ];

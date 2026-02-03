@@ -10,7 +10,15 @@ module.exports = (sequelize) => {
     },
     nombre: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
+      validate:{
+        notNull:{
+          msg: 'El nombre es obligatorio'
+        },
+        notEmpty: {
+          msg: 'El nombre no puede estar vacío'
+        }
+      }
     },
     direccion: {
       type: DataTypes.STRING,

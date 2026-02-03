@@ -506,7 +506,7 @@ export default function QuejaModal({
                     </div>
 
                     {/* Fechas importantes */}
-                    <div className="mt-6">
+                    {/* <div className="mt-6">
                         <h4 className="text-sm font-semibold text-gray-700 mb-3">Fechas importantes</h4>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
@@ -539,10 +539,10 @@ export default function QuejaModal({
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Claves */}
-                    <div className="mt-6">
+                    {/* <div className="mt-6">
                         <h4 className="text-sm font-semibold text-gray-700 mb-3">Claves</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -577,7 +577,7 @@ export default function QuejaModal({
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className="flex justify-end space-x-3 mt-6">
                         <button

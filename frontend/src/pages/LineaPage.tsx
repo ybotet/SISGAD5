@@ -20,6 +20,7 @@ import {
     LineaConfirmModal,
     LineaDetallesModal
 } from '../components/linea';
+import { getBackendErrorMessage } from '../utils/apiErrors';
 
 export default function LineaPage() {
     // Estados principales
@@ -159,10 +160,9 @@ export default function LineaPage() {
             // Recargar los datos
             await loadLineas(pagination.page, pagination.limit, searchTerm, estadoFilter);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('❌ Error en eliminación:', err);
-            const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar la línea';
-            setError(errorMessage);
+            setError(getBackendErrorMessage(err, 'Error al eliminar la línea'));
         } finally {
             // Siempre cerrar el modal y resetear estados
             setDeleting(false);
@@ -221,10 +221,11 @@ export default function LineaPage() {
             loadLineas(pagination.page, pagination.limit, searchTerm, estadoFilter);
             setShowModal(false);
             setEditingItem(null);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.error || err?.message ||
-                (editingItem ? 'Error al actualizar la línea' : 'Error al crear la línea');
-            setError(errorMessage);
+        } catch (err: unknown) {
+            setError(getBackendErrorMessage(
+                err,
+                editingItem ? 'Error al actualizar la línea' : 'Error al crear la línea'
+            ));
             console.error('Error saving linea:', err);
             throw err;
         } finally {

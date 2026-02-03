@@ -41,7 +41,18 @@ const LineaController = {
         include: [{
           association: 'tb_tipolinea',
           attributes: ['id_tipolinea', 'tipo']
-        }],
+        },
+        {
+          association: 'tb_propietario',
+          attributes: ['id_propietario', 'nombre']
+        },
+        {
+          association: 'tb_senalizacion',
+          attributes: ['id_senalizacion', 'senalizacion']
+        },
+
+        ],
+
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -153,17 +164,20 @@ const LineaController = {
       console.error('Error en LineaController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error creando línea',
         error: 'Error creando Linea',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
   },
@@ -199,15 +213,18 @@ const LineaController = {
       console.error('Error en LineaController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error actualizando línea',
         error: 'Error actualizando Linea'
       });
     }

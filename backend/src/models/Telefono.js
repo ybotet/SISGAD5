@@ -32,8 +32,11 @@ module.exports = (sequelize) => {
     },
     nombre: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: 'El nombre es obligatorio'
+        },
         is: {
           args: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
           msg: 'El nombre solo puede contener letras y espacios'
@@ -46,8 +49,11 @@ module.exports = (sequelize) => {
     },
     direccion: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: 'La dirección es obligatoria'
+        },
         len: {
           args: [0, 50],
           msg: 'El campo dirección no debe exceder los 50 caracteres'

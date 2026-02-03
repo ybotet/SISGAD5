@@ -37,6 +37,10 @@ const PizarraController = {
 
       const data = await Pizarra.findAndCountAll({
         where: whereClause,
+        include: [{
+          association: 'tb_tipopizarra',
+          attributes: ['id_tipopizarra', 'tipo']
+        }],
         limit: parseInt(limit),
         offset: offset,
         order: [[sortBy, sortOrder.toUpperCase()]]
@@ -110,17 +114,20 @@ const PizarraController = {
       console.error('Error en PizarraController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error creando pizarra',
         error: 'Error creando Pizarra',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
   },
@@ -156,15 +163,18 @@ const PizarraController = {
       console.error('Error en PizarraController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error actualizando pizarra',
         error: 'Error actualizando Pizarra'
       });
     }

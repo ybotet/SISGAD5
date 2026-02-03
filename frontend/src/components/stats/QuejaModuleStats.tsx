@@ -77,7 +77,7 @@ export default function QuejaModuleStats() {
     }));
 
     // quejas creadas por año (líneas)
-    const yearGroups = groupBy(quejas, (q) => new Date(q.createdAt).getFullYear().toString());
+    const yearGroups = groupBy(quejas, (q) => new Date(q.fecha).getFullYear().toString());
     const yearLineData = yearGroups
         .sort((a, b) => a[0].localeCompare(b[0]))
         .map(([year, count]) => ({

@@ -20,6 +20,7 @@ import {
     TelefonoConfirmModal,
     TelefonoDetallesModal
 } from '../components/telefono';
+import { getBackendErrorMessage } from '../utils/apiErrors';
 
 export default function TelefonoPage() {
     // Estados principales
@@ -167,10 +168,9 @@ export default function TelefonoPage() {
             // Recargar los datos
             await loadTelefonos(pagination.page, pagination.limit, searchTerm, estadoFilter);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('❌ Error en eliminación:', err);
-            const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar el teléfono';
-            setError(errorMessage);
+            setError(getBackendErrorMessage(err, 'Error al eliminar el teléfono'));
         } finally {
             // Siempre cerrar el modal y resetear estados
             setDeleting(false);
@@ -223,10 +223,11 @@ export default function TelefonoPage() {
             loadTelefonos(pagination.page, pagination.limit, searchTerm, estadoFilter);
             setShowModal(false);
             setEditingItem(null);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.error || err?.message ||
-                (editingItem ? 'Error al actualizar el teléfono' : 'Error al crear el teléfono');
-            setError(errorMessage);
+        } catch (err: unknown) {
+            setError(getBackendErrorMessage(
+                err,
+                editingItem ? 'Error al actualizar el teléfono' : 'Error al crear el teléfono'
+            ));
             console.error('Error saving telefono:', err);
             throw err;
         } finally {

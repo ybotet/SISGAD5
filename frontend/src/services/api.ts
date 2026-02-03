@@ -45,25 +45,30 @@ api.interceptors.request.use(
 //     }
 // );
 
+function getBackendMessage(data: { message?: string; error?: string; details?: string[] } | undefined): string {
+    if (!data) return 'Error del servidor';
+    if (data.message) return data.message;
+    if (data.error) return data.error;
+    if (Array.isArray(data.details) && data.details.length > 0) return data.details.join('. ');
+    return 'Error del servidor';
+}
+
 api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response) {
             const { status, data } = error.response;
+            const message = getBackendMessage(data);
 
             switch (status) {
                 case 403:
-                    // Lanzar error específico para 403
-                    throw new ForbiddenError(data?.message || 'Acceso denegado');
+                    throw new ForbiddenError(message);
                 case 401:
-                    throw new UnauthorizedError('No autorizado');
+                    throw new UnauthorizedError(message);
                 case 404:
-                    throw new NotFoundError('Recurso no encontrado');
+                    throw new NotFoundError(message);
                 default:
-                    throw new ApiError(
-                        data?.message || 'Error del servidor',
-                        status
-                    );
+                    throw new ApiError(message, status);
             }
         }
         throw error;

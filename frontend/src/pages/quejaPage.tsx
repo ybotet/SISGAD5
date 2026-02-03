@@ -21,6 +21,7 @@ import {
     QuejaConfirmModal,
     QuejaDetallesModal
 } from '../components/queja';
+import { getBackendErrorMessage } from '../utils/apiErrors';
 
 export default function QuejaPage() {
     // Estados principales
@@ -195,10 +196,9 @@ export default function QuejaPage() {
             // Recargar los datos
             await loadQuejas(pagination.page, pagination.limit, searchTerm, estadoFilter);
 
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('❌ Error en eliminación:', err);
-            const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar la queja';
-            setError(errorMessage);
+            setError(getBackendErrorMessage(err, 'Error al eliminar la queja'));
         } finally {
             setDeleting(false);
             setShowConfirmModal(false);
@@ -264,11 +264,12 @@ export default function QuejaPage() {
 
             setShowModal(false);
             setEditingItem(null);
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('❌ Error saving queja:', err);
-            const errorMessage = err?.response?.data?.error || err?.message ||
-                (editingItem ? 'Error al actualizar la queja' : 'Error al crear la queja');
-            setError(errorMessage);
+            setError(getBackendErrorMessage(
+                err,
+                editingItem ? 'Error al actualizar la queja' : 'Error al crear la queja'
+            ));
             throw err;
         } finally {
             setSaving(false);

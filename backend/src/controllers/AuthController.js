@@ -1,16 +1,73 @@
 const jwt = require('jsonwebtoken');
 const { User, Rol, Permiso } = require('../models/index');
 
+// Validación de correo: vacío, formato (@ y dominio), longitud, caracteres permitidos
+function validarEmail(email) {
+    if (email === undefined || email === null || String(email).trim() === '') {
+        return 'El correo es obligatorio';
+    }
+    const s = String(email).trim();
+    if (s.length > 254) {
+        return 'El correo no debe exceder 254 caracteres';
+    }
+    if (!s.includes('@')) {
+        return 'El correo debe contener @';
+    }
+    const [local, domain] = s.split('@');
+    if (!local || !domain || !domain.includes('.')) {
+        return 'El correo debe tener un dominio válido (ej: usuario@dominio.com)';
+    }
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (!emailRegex.test(s)) {
+        return 'El correo contiene caracteres no permitidos o formato inválido';
+    }
+    return null;
+}
+
+// Validación de contraseña: vacío, longitud 8-128, sin espacios, requisitos de seguridad
+function validarPassword(password) {
+    if (password === undefined || password === null) {
+        return 'La contraseña es obligatoria';
+    }
+    const s = String(password);
+    if (s.length === 0) {
+        return 'La contraseña es obligatoria';
+    }
+    if (s.length < 8) {
+        return 'La contraseña debe tener al menos 8 caracteres';
+    }
+    if (s.length > 128) {
+        return 'La contraseña no debe exceder 128 caracteres';
+    }
+    if (/\s/.test(s)) {
+        return 'La contraseña no debe contener espacios';
+    }
+    const tieneMinuscula = /[a-z]/.test(s);
+    const tieneMayuscula = /[A-Z]/.test(s);
+    const tieneNumero = /[0-9]/.test(s);
+    if (!tieneMinuscula || !tieneMayuscula || !tieneNumero) {
+        return 'La contraseña debe incluir mayúsculas, minúsculas y números';
+    }
+    return null;
+}
+
 const authController = {
     login: async (req, res) => {
         try {
             const { email, password } = req.body;
 
-            // Validar campos
-            if (!email || !password) {
+            const errorEmail = validarEmail(email);
+            if (errorEmail) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Email y contraseña son requeridos'
+                    message: errorEmail
+                });
+            }
+            const errorPassword = validarPassword(password);
+            if (errorPassword) {
+                return res.status(400).json({
+                    success: false,
+                    message: errorPassword
                 });
             }
 

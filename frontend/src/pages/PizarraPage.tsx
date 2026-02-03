@@ -19,6 +19,7 @@ import {
     PizarraConfirmModal,
     PizarraDetallesModal
 } from '../components/pizarra';
+import { getBackendErrorMessage } from '../utils/apiErrors';
 
 export default function PizarraPage() {
     const [items, setItems] = useState<PizarraItem[]>([]);
@@ -103,9 +104,8 @@ export default function PizarraPage() {
             setError('');
             await pizarraService.deletePizarra(itemToDelete);
             await loadPizarras(pagination.page, pagination.limit, searchTerm);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar la pizarra';
-            setError(errorMessage);
+        } catch (err: unknown) {
+            setError(getBackendErrorMessage(err, 'Error al eliminar la pizarra'));
         } finally {
             setDeleting(false);
             setShowConfirmModal(false);
@@ -136,9 +136,11 @@ export default function PizarraPage() {
             loadPizarras(pagination.page, pagination.limit, searchTerm);
             setShowModal(false);
             setEditingItem(null);
-        } catch (err: any) {
-            const errorMessage = err?.response?.data?.error || err?.message || (editingItem ? 'Error al actualizar la pizarra' : 'Error al crear la pizarra');
-            setError(errorMessage);
+        } catch (err: unknown) {
+            setError(getBackendErrorMessage(
+                err,
+                editingItem ? 'Error al actualizar la pizarra' : 'Error al crear la pizarra'
+            ));
             console.error('Error saving pizarra:', err);
             throw err;
         } finally {

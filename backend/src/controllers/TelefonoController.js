@@ -160,17 +160,20 @@ const TelefonoController = {
       console.error('Error en TelefonoController.create:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación: ' + error.errors.map(err => err.message).join(', '),
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error creando teléfono',
         error: 'Error creando Telefono',
-        message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
   },
@@ -214,15 +217,18 @@ const TelefonoController = {
       console.error('Error en TelefonoController.update:', error);
 
       if (error.name === 'SequelizeValidationError') {
+        const mensajes = error.errors.map(err => err.message).join('. ');
         return res.status(400).json({
           success: false,
-          error: 'Error de validación',
+          message: mensajes,
+          error: mensajes,
           details: error.errors.map(err => err.message)
         });
       }
 
       res.status(400).json({
         success: false,
+        message: 'Error actualizando teléfono',
         error: 'Error actualizando Telefono'
       });
     }

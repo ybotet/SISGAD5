@@ -12,7 +12,19 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 12]
+        len: {
+          args: [0, 12],
+          msg: 'La clave no debe ser mayos de 12 caracteres'
+        },
+        notNull: {
+          msg: 'La clave es obligatoria'
+        },
+        notEmpty: {
+          msg: 'La clave no puede estar vacía'
+        },
+        unique: {
+          msg: 'La clave ya existe'
+        }
       },
       unique: true,
       allowNull: false
@@ -21,7 +33,9 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 12]
+        len: {
+          args: [0, 12],
+          msg: 'La clave no debe ser mayor de 12 caracteres'}
       },
       unique: true
     },
@@ -29,28 +43,40 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 7]
+        len: {
+          args: [0, 7],
+          msg: 'La codificación no debe ser mayor de 7 caracteres'
+        }
       },
     },
     hilos: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 2]
+        len: {
+          args: [0, 2],
+          msg: 'Los hilos no deben poseer más de 2 caracteres'
+        },
       },
     },
     desde: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 50]
+        len: {
+          args: [0, 50],
+          msg: 'El campo desde no debe poseer más de 50 caracteres'
+        },
       },
     },
     dirde: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 50]
+        len: {
+          args: [0, 50],
+          msg: 'El campo dirde no debe poseer más de 50 caracteres'
+        },
       },
     },
     distdesde: {
@@ -62,21 +88,30 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 20]
+        len: {
+          args: [0, 20],
+          msg: 'El campo zd no debe poseer más de 20 caracteres'
+        },
       },
     },
     hasta: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 50]
+        len: {
+          args: [0, 50],
+          msg: 'El campo hasta no debe poseer más de 50 caracteres'
+        },
       },
     },
     dirha: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 50]
+        len: {
+          args: [0, 50],
+          msg: 'El campo dirha no debe poseer más de 50 caracteres'
+        },
       },
     },
     disthasta: {
@@ -88,7 +123,10 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 20]
+        len: {
+          args: [0, 20],
+          msg: 'El campo desde no debe poseer más de 20 caracteres'
+        },
       },
     },
     esbaja: {
@@ -100,14 +138,20 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 60]
+        len: {
+          args: [0, 60],
+          msg: 'El campo facturado no debe poseer más de 60 caracteres'
+        },
       },
     },
     sector: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        len: [0, 2]
+        len: {
+          args: [0, 2],
+          msg: 'El campo sector no debe poseer más de 2 caracteres'
+        },
       },
     },
     id_senalizacion: {
