@@ -59,11 +59,25 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="main/lineas" element={<LineaPage />} />
+        <Route path="main/lineas" element={
+          <ProtectedRoute permission="lineas.ver">
+            <LineaPage />
+          </ProtectedRoute>
+          } />
         <Route path="main/pizarras" element={<PizarraPage />} />
-        <Route path="stats" element={<StatsPage />} />
-        <Route path="main/quejas" element={<QuejaPage />} />
-        <Route path="operarios" element={<TrabajadorPage />} />
+        <Route path="stats" element={
+          <ProtectedRoute permission="estadisticas.ver">
+            <StatsPage />
+          </ProtectedRoute>} />
+          
+        <Route path="main/quejas" element={
+           <ProtectedRoute permission="quejas.ver">
+            <QuejaPage />
+           </ProtectedRoute>} />
+        <Route path="operarios" element={
+          <ProtectedRoute permission="trabajadores.ver">
+            <TrabajadorPage />
+          </ProtectedRoute>} />
         <Route path="admin/usuarios" element={
           <ProtectedRoute permission="usuarios.ver">
             <UsuariosPage />
