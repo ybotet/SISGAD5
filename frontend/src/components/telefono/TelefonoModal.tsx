@@ -166,6 +166,7 @@ export default function TelefonoModal({
                                 value={formData.nombre}
                                 onChange={handleInputChange}
                                 maxLength={200}
+                                required
                                 disabled={saving}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
                                 placeholder="Nombre del titular"
@@ -181,6 +182,7 @@ export default function TelefonoModal({
                                 name="telefono"
                                 value={formData.telefono}
                                 onChange={handleInputChange}
+                                required
                                 maxLength={20}
                                 disabled={saving}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed"
@@ -199,6 +201,7 @@ export default function TelefonoModal({
                                 value={formData.direccion}
                                 onChange={handleInputChange}
                                 rows={2}
+                                required
                                 maxLength={300}
                                 disabled={saving}
                                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm disabled:bg-gray-100 disabled:cursor-not-allowed resize-none"

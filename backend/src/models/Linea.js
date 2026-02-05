@@ -10,7 +10,7 @@ module.exports = (sequelize) => {
     },
     clavelinea: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate: {
         len: {
           args: [0, 12],
@@ -22,12 +22,10 @@ module.exports = (sequelize) => {
         notEmpty: {
           msg: 'La clave no puede estar vacía'
         },
-        unique: {
-          msg: 'La clave ya existe'
-        }
+
       },
-      unique: true,
-      allowNull: false
+      unique: true
+
     },
     clave_n: {
       type: DataTypes.STRING,

@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
     },
     direccion: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
       validate:{
         notNull:{
           msg: 'La dirección es obligatoria'

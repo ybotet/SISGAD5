@@ -10,7 +10,6 @@ module.exports = (sequelize) => {
     },
     telefono: {
       type: DataTypes.STRING,
-      allowNull: true,
       validate: {
         len: {
           args: [6, 10],
