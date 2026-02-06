@@ -151,4 +151,17 @@ export const usuariosService = {
     async deleteUsuario(id: number): Promise<void> {
         await api.delete(`/user/${id}`);
     },
+
+    // Eliminar múltiples usuarios
+    async deleteUsuariosMultiple(ids: number[]): Promise<{ 
+        success: boolean; 
+        message: string;
+        eliminados: number;
+        totalSolicitados: number;
+    }> {
+        const response = await api.delete('/user/', {
+            data: { ids } // Enviar los IDs en el body
+        });
+        return response.data;
+    },
 };

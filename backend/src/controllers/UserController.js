@@ -226,6 +226,59 @@ const usuariosController = {
                 message: 'Error al eliminar usuario'
             });
         }
+    },
+
+    eliminarVariosUser: async (req, res) => {
+        try{
+            const { ids } = req.body; // Recibir un array de IDs
+
+            if (!Array.isArray(ids) || ids.length === 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'Se debe proporcionar un array de IDs para eliminar'
+                });
+            }
+
+            // Validar que todos los IDs sean números (si tu id es numérico)
+            const idsInvalidos = ids.filter(id => isNaN(id) || id <= 0);
+            if (idsInvalidos.length > 0) {
+                return res.status(400).json({
+                    success: false,
+                    message: `Los siguientes IDs no son válidos: ${idsInvalidos.join(', ')}`
+                });
+            }
+
+            // Verificar si los usuarios existen antes de eliminar (opcional)
+            const usuariosExistentes = await User.count({
+                where: { id_usuario: ids }
+            });
+
+            if (usuariosExistentes !== ids.length) {
+                return res.status(404).json({
+                    success: false,
+                    message: 'Algunos usuarios no existen'
+                });
+            }
+
+            // Eliminar los usuarios
+            const eliminados = await User.destroy({ 
+                where: { id_usuario: ids } 
+            });
+
+            res.json({
+                success: true,
+                message: `Se eliminaron ${eliminados} usuario(s) exitosamente`,
+                eliminados: eliminados,
+                totalSolicitados: ids.length
+            });
+
+        } catch (error) {
+            console.error('Error al eliminar usuarios:', error);
+            res.status(500).json({
+                success: false,
+                message: 'Error al eliminar usuarios'
+            });
+        }
     }
 };
 

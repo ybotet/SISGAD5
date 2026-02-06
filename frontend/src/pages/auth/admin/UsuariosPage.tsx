@@ -40,6 +40,11 @@ export default function UsuariosPage() {
     const [itemToDelete, setItemToDelete] = useState<number | null>(null);
     const [deleting, setDeleting] = useState(false);
 
+    // Nuevos estados para eliminación múltiple
+    const [selectedIds, setSelectedIds] = useState<number[]>([]);
+    const [showMultipleConfirmModal, setShowMultipleConfirmModal] = useState(false);
+    const [deletingMultiple, setDeletingMultiple] = useState(false);
+
     // Cargar datos iniciales
     useEffect(() => {
         loadUsuarios();
@@ -53,6 +58,13 @@ export default function UsuariosPage() {
 
         return () => clearTimeout(timeoutId);
     }, [searchTerm]);
+
+    // Limpiar selección cuando cambian los items
+    useEffect(() => {
+        if (items.length === 0) {
+            setSelectedIds([]);
+        }
+    }, [items]);
 
     const loadUsuarios = async (page: number = 1, limit: number = 10, search: string = '') => {
         try {
@@ -137,9 +149,67 @@ export default function UsuariosPage() {
         loadUsuarios(1, newLimit, searchTerm);
     };
 
-    // Funciones para eliminar con confirmación modal
+    // ===== FUNCIONES DE ELIMINACIÓN MÚLTIPLE =====
+    const handleSelectionChange = (ids: number[]) => {
+        console.log('Cambio en selección:', ids);
+        setSelectedIds(ids);
+    };
+
+    const handleDeleteMultiple = () => {
+        if (selectedIds.length === 0) {
+            setError('Por favor, selecciona al menos un usuario para eliminar');
+            setTimeout(() => setError(''), 3000);
+            return;
+        }
+        
+        console.log('Solicitando eliminación múltiple para IDs:', selectedIds);
+        setShowMultipleConfirmModal(true);
+    };
+
+    const handleConfirmDeleteMultiple = async () => {
+        console.log('Confirmando eliminación múltiple para IDs:', selectedIds);
+
+        try {
+            setDeletingMultiple(true);
+            setError('');
+
+            const result = await usuariosService.deleteUsuariosMultiple(selectedIds);
+            console.log('🗑️ Eliminación múltiple exitosa:', result);
+
+            // Actualizar la lista local
+            setItems(prev => prev.filter(user => !selectedIds.includes(user.id_usuario)));
+            
+            // Actualizar el total
+            setPagination(prev => ({
+                ...prev,
+                total: prev.total - result.eliminados
+            }));
+            
+            // Limpiar selección
+            setSelectedIds([]);
+
+            // Mostrar mensaje de éxito
+            setError(`✓ Se eliminaron ${result.eliminados} de ${result.totalSolicitados} usuario(s) correctamente`);
+            setTimeout(() => setError(''), 3000);
+
+        } catch (err: any) {
+            console.error('Error en eliminación múltiple:', err);
+            const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar los usuarios';
+            setError(errorMessage);
+        } finally {
+            setDeletingMultiple(false);
+            setShowMultipleConfirmModal(false);
+        }
+    };
+
+    const handleCancelDeleteMultiple = () => {
+        console.log('Eliminación múltiple cancelada');
+        setShowMultipleConfirmModal(false);
+    };
+
+    // ===== FUNCIONES DE ELIMINACIÓN INDIVIDUAL =====
     const handleDelete = (id: number) => {
-        console.log('Solicitando eliminación para ID:', id);
+        console.log('Solicitando eliminación individual para ID:', id);
         setItemToDelete(id);
         setShowConfirmModal(true);
     };
@@ -147,20 +217,26 @@ export default function UsuariosPage() {
     const handleConfirmDelete = async () => {
         if (!itemToDelete) return;
 
-        console.log('Confirmando eliminación para ID:', itemToDelete);
+        console.log('Confirmando eliminación individual para ID:', itemToDelete);
 
         try {
             setDeleting(true);
             setError('');
 
             await usuariosService.deleteUsuario(itemToDelete);
-            console.log('🗑️ Eliminación exitosa');
+            console.log('🗑️ Eliminación individual exitosa');
 
-            // Recargar los datos
-            await loadUsuarios(pagination.page, pagination.limit, searchTerm);
+            // Actualizar la lista local
+            setItems(prev => prev.filter(user => user.id_usuario !== itemToDelete));
+            
+            // Actualizar el total
+            setPagination(prev => ({
+                ...prev,
+                total: prev.total - 1
+            }));
 
         } catch (err: any) {
-            console.error('Error en eliminación:', err);
+            console.error('Error en eliminación individual:', err);
             const errorMessage = err?.response?.data?.error || err?.message || 'Error al eliminar el usuario';
             setError(errorMessage);
         } finally {
@@ -171,7 +247,7 @@ export default function UsuariosPage() {
     };
 
     const handleCancelDelete = () => {
-        console.log('Eliminación cancelada por el usuario');
+        console.log('Eliminación individual cancelada');
         setShowConfirmModal(false);
         setItemToDelete(null);
     };
@@ -209,7 +285,12 @@ export default function UsuariosPage() {
                 }
 
                 console.log('Datos para actualizar:', updateData);
-                await usuariosService.updateUsuario(editingItem.id_usuario, updateData);
+                const updatedUser = await usuariosService.updateUsuario(editingItem.id_usuario, updateData);
+                
+                // Actualizar en la lista local
+                setItems(prev => prev.map(item => 
+                    item.id_usuario === updatedUser.id_usuario ? updatedUser : item
+                ));
             } else {
                 // Para creación
                 const createData: CreateUsuarioRequest = {
@@ -222,11 +303,15 @@ export default function UsuariosPage() {
                 };
 
                 console.log('Datos para crear:', createData);
-                await usuariosService.createUsuario(createData);
+                const newUser = await usuariosService.createUsuario(createData);
+                
+                // Agregar a la lista local
+                setItems(prev => [newUser, ...prev]);
+                setPagination(prev => ({
+                    ...prev,
+                    total: prev.total + 1
+                }));
             }
-
-            console.log('Operación exitosa, recargando lista...');
-            await loadUsuarios(pagination.page, pagination.limit, searchTerm);
 
             setShowModal(false);
             setEditingItem(null);
@@ -250,6 +335,8 @@ export default function UsuariosPage() {
     const handleRefresh = () => {
         console.log('Refrescando lista de usuarios');
         loadUsuarios(pagination.page, pagination.limit, searchTerm);
+        // Limpiar selección al refrescar
+        setSelectedIds([]);
     };
 
     // Loading state inicial
@@ -268,14 +355,69 @@ export default function UsuariosPage() {
     return (
         <div className="p-6 bg-gray-50 min-h-screen">
             {/* Header */}
-            <UsuariosHeader
-                title="Gestión de Usuarios"
-                description="Administra los usuarios, roles y permisos del sistema"
-                onAdd={() => {
-                    console.log('Abriendo modal para nuevo usuario');
-                    setShowModal(true);
-                }}
-            />
+            <div className="mb-6">
+                <div className="flex justify-between items-start">
+                    <div>
+                        <h1 className="text-2xl font-bold text-gray-900">Gestión de Usuarios</h1>
+                        <p className="text-gray-600">Administra los usuarios, roles y permisos del sistema</p>
+                    </div>
+                    
+                    <div className="flex space-x-3">
+                        <button
+                            onClick={() => {
+                                console.log('Abriendo modal para nuevo usuario');
+                                setShowModal(true);
+                            }}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors whitespace-nowrap"
+                        >
+                            <i className="ri-add-line"></i>
+                            <span>Nuevo Usuario</span>
+                        </button>
+                    </div>
+                </div>
+                
+                {/* Barra de selección múltiple */}
+                {selectedIds.length > 0 && (
+                    <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <i className="ri-checkbox-multiple-line text-blue-600 mr-3 text-xl"></i>
+                                <div>
+                                    <p className="font-medium text-blue-800">
+                                        {selectedIds.length} usuario(s) seleccionado(s)
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="flex space-x-2">
+                                <button
+                                    onClick={handleDeleteMultiple}
+                                    disabled={deletingMultiple}
+                                    className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded flex items-center space-x-2 disabled:opacity-50"
+                                >
+                                    {deletingMultiple ? (
+                                        <>
+                                            <i className="ri-loader-4-line animate-spin"></i>
+                                            <span>Eliminando...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <i className="ri-delete-bin-line"></i>
+                                            <span>Eliminar seleccionados</span>
+                                        </>
+                                    )}
+                                </button>
+                                <button
+                                    onClick={() => setSelectedIds([])}
+                                    className="px-4 py-2 border border-blue-300 text-blue-700 bg-white hover:bg-blue-50 rounded"
+                                >
+                                    <i className="ri-close-line mr-1"></i>
+                                    Cancelar selección
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
 
             {/* Error */}
             <UsuariosError
@@ -301,16 +443,21 @@ export default function UsuariosPage() {
                 onSearchChange={(term) => {
                     console.log('Buscando por:', term);
                     setSearchTerm(term);
+                    // Limpiar selección al buscar
+                    setSelectedIds([]);
                 }}
                 onRefresh={handleRefresh}
             />
 
-            {/* Table */}
+            {/* Table - con checkbox de selección múltiple */}
             <UsuariosTable
                 items={items}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 loading={loading && items.length > 0}
+                // Pasar props para selección múltiple
+                onSelectionChange={handleSelectionChange}
+                selectedIds={selectedIds}
             />
 
             {/* Pagination */}
@@ -333,7 +480,7 @@ export default function UsuariosPage() {
                 onSave={handleSave}
             />
 
-            {/* Modal de Confirmación de Eliminación */}
+            {/* Modal de Confirmación de Eliminación Individual */}
             <UsuariosConfirmModal
                 show={showConfirmModal}
                 title="Confirmar Eliminación"
@@ -343,6 +490,18 @@ export default function UsuariosPage() {
                 confirmText="Sí, eliminar"
                 cancelText="Cancelar"
                 loading={deleting}
+            />
+
+            {/* Modal de Confirmación de Eliminación Múltiple */}
+            <UsuariosConfirmModal
+                show={showMultipleConfirmModal}
+                title={`Eliminar ${selectedIds.length} usuario(s)`}
+                message={`¿Está seguro de que desea eliminar los ${selectedIds.length} usuario(s) seleccionado(s)? Esta acción no se puede deshacer.`}
+                onConfirm={handleConfirmDeleteMultiple}
+                onCancel={handleCancelDeleteMultiple}
+                confirmText={deletingMultiple ? "Eliminando..." : `Sí, eliminar ${selectedIds.length} usuario(s)`}
+                cancelText="Cancelar"
+                loading={deletingMultiple}
             />
 
             {/* Estado vacío */}

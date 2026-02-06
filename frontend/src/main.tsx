@@ -6,19 +6,19 @@ import 'remixicon/fonts/remixicon.css';
 import { AuthProvider } from './contexts/AuthContext';
 
 import { ErrorProvider } from './contexts/ErrorContext';
-import ErrorDisplay from './components/ErrorDisplay';
-import { useError } from './contexts/ErrorContext';
+// import ErrorDisplay from './components/ErrorDisplay';
+// import { useError } from './contexts/ErrorContext';
 
-const AppContent = () => {
-  const { error, clearError } = useError();
+// const AppContent = () => {
+//   const { error, clearError } = useError();
 
-  return (
-    <>
-      <ErrorDisplay error={error} onClose={clearError} />
-      {/* Resto de tu aplicación */}
-    </>
-  );
-};
+//   return (
+//     <>
+//       <ErrorDisplay error={error} onClose={clearError} />
+//       {/* Resto de tu aplicación */}
+//     </>
+//   );
+// };
 
 
 const isProduction = import.meta.env.PROD;

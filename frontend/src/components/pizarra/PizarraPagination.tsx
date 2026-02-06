@@ -6,7 +6,7 @@ interface PaginationProps {
     onPrev: () => void;
 }
 
-export default function PizarraPagination({ pagination, onPageChange, onLimitChange, onNext, onPrev }: PaginationProps) {
+export default function PizarraPagination({ pagination, onLimitChange, onNext, onPrev }: PaginationProps) {
     return (
         <div className="mt-4 flex items-center justify-between">
             <div className="text-sm text-gray-600">Página {pagination.page} de {pagination.pages}</div>
