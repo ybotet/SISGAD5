@@ -21,6 +21,11 @@ export interface Clave {
     clave: string;
 }
 
+export interface ResultadoPrueba {
+    id_resultadoprueba: number;
+    resultado: string;
+}
+
 export interface Pizarra {
     id_pizarra: number;
     nombre: string;
@@ -220,6 +225,12 @@ export const quejaService = {
     // Obtener pizarras para combo
     async getPizarras(): Promise<Pizarra[]> {
         const response = await api.get<ApiResponse<Pizarra[]>>('/pizarra?limit=100');
+        return response.data.data;
+    },
+
+    //Obtener pruebas para combo
+    async getResultadosPrueba(): Promise<ResultadoPrueba[]> {
+        const response = await api.get<ApiResponse<ResultadoPrueba[]>>('/resultadoprueba?limit=100');
         return response.data.data;
     },
 

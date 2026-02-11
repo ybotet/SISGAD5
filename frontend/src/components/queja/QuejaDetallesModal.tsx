@@ -1,4 +1,4 @@
-import type { QuejaItem, PruebaItem, TrabajoItem, Clave, Trabajador } from '../../services/quejaService';
+import type { QuejaItem, PruebaItem, TrabajoItem, Clave, Trabajador, ResultadoPrueba } from '../../services/quejaService';
 import { quejaService } from '../../services/quejaService';
 import { useState, useEffect } from 'react';
 
@@ -32,6 +32,7 @@ export default function QuejaDetallesModal({
     // Estados para combos
     const [claves, setClaves] = useState<Clave[]>([]);
     const [probadores, setProbadores] = useState<Trabajador[]>([]);
+    const [resultados, setResultados] = useState<ResultadoPrueba[]>([]);
     // const [ setLoadingCombos] = useState<boolean>(false);
     const [_loadingCombos, setLoadingCombos] = useState<boolean>(false);
 
@@ -60,11 +61,13 @@ export default function QuejaDetallesModal({
     const loadCombos = async () => {
         try {
             setLoadingCombos(true);
-            const [clavesData, probadoresData] = await Promise.all([
+            const [clavesData, resultadosData, probadoresData] = await Promise.all([
                 quejaService.getClaves(),
+                quejaService.getResultadosPrueba(),
                 quejaService.getProbadores()
             ]);
             setClaves(clavesData);
+            setResultados(resultadosData); 
             setProbadores(probadoresData);
         } catch (err) {
             console.error('Error cargando combos:', err);
@@ -408,6 +411,24 @@ export default function QuejaDetallesModal({
                                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                                                         />
                                                     </div>
+                                                     <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                            Probador
+                                                        </label>
+                                                        <select
+                                                            name="id_trabajador"
+                                                            value={nuevaPrueba.id_trabajador}
+                                                            onChange={handlePruebaChange}
+                                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                                        >
+                                                            <option value="">Seleccionar probador</option>
+                                                            {probadores.map((probador) => (
+                                                                <option key={probador.id_trabajador} value={probador.id_trabajador}>
+                                                                    {probador.clave_trabajador || `ID: ${probador.id_trabajador}`}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
                                                     <div>
                                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                                             Clave
@@ -422,6 +443,24 @@ export default function QuejaDetallesModal({
                                                             {claves.map((clave) => (
                                                                 <option key={clave.id_clave} value={clave.id_clave}>
                                                                     {clave.clave}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                            Resultado
+                                                        </label>
+                                                        <select
+                                                            name="id_resultado"
+                                                            value={nuevaPrueba.id_resultado}
+                                                            onChange={handlePruebaChange}
+                                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                                                        >
+                                                            <option value="">Seleccionar resultado</option>
+                                                            {resultados.map((resultado) => (
+                                                                <option key={resultado.id_resultadoprueba} value={resultado.id_resultadoprueba}>
+                                                                    {resultado.resultado}
                                                                 </option>
                                                             ))}
                                                         </select>
@@ -452,6 +491,9 @@ export default function QuejaDetallesModal({
                                                         Fecha
                                                     </th>
                                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                        Probador
+                                                    </th>
+                                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                         Clave
                                                     </th>
                                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -477,6 +519,9 @@ export default function QuejaDetallesModal({
                                                             </td>
                                                             <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                                 {prueba.fecha ? new Date(prueba.fecha).toLocaleDateString() : 'N/A'}
+                                                            </td>
+                                                            <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                                                                {prueba.tb_trabajador ? prueba.tb_trabajador.clave_trabajador : 'N/A'}
                                                             </td>
                                                             <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                                                                 {prueba.tb_clave?.clave || 'N/A'}
