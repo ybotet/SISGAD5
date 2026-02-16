@@ -31,6 +31,7 @@ import PizarraPage from './pages/PizarraPage';
 import UsuariosPage from './pages/auth/admin/UsuariosPage';
 import RolesPage from './pages/auth/admin/RolesPage';
 import StatsPage from './pages/StatsPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 export default function App() {
 
@@ -75,7 +76,7 @@ export default function App() {
             <QuejaPage />
            </ProtectedRoute>} />
         <Route path="operarios" element={
-          <ProtectedRoute permission="trabajadores.ver">
+          <ProtectedRoute permission="trabajadores.gestionar">
             <TrabajadorPage />
           </ProtectedRoute>} />
         <Route path="admin/usuarios" element={
@@ -171,7 +172,10 @@ export default function App() {
             <SistemaPage />
           </ProtectedRoute>} 
         />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
 
     </Routes>
   );

@@ -192,7 +192,14 @@ module.exports = (sequelize) => {
           throw new Error('Error generando num_reporte: ' + (err.message || err));
         }
       }
-    }
+    }, 
+     validate: {
+      alMenosUnId() {
+        if (!this.id_telefono && !this.id_linea && !this.id_pizarra) {
+          throw new Error('Debe seleccionar al menos un elemento (teléfono, línea o pizarra)');
+        }
+      }
+     }
   });
 
   return TbQueja;

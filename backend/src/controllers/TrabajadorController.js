@@ -239,7 +239,7 @@ const TrabajadorController = {
               message: 'No se encontraron probadores'
           });
       }
-        console.log(data)
+        // console.log(data)
         res.json({
             success: true,
             data: data
